@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.ml.common.FirebaseMLException
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
+import com.ipleiria.mothertongue.automl.AutoMLImageLabelerProcessor
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
 import com.ipleiria.mothertongue.object_detection.ObjectRecognitionProcessor
@@ -88,9 +89,15 @@ class LiveCamera : AppCompatActivity() {
                 FirebaseVisionObjectDetectorOptions.Builder()
                     .setDetectorMode(FirebaseVisionObjectDetectorOptions.STREAM_MODE)
                     .enableClassification().build()
+            //object processor
             cameraSource!!.setMachineLearningFrameProcessor(
-                ObjectRecognitionProcessor(objectDetectorOptions)
+                ObjectRecognitionProcessor(
+                    objectDetectorOptions
+                )
             )
+
+            // cameraSource?.setMachineLearningFrameProcessor(AutoMLImageLabelerProcessor(this, AutoMLImageLabelerProcessor.Mode.LIVE_PREVIEW))
+
         } catch (e: Exception) {
             Log.e(TAG, "can not create camera source: $model")
         }

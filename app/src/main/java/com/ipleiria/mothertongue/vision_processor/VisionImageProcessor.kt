@@ -1,7 +1,9 @@
-package com.ipleiria.mothertongue.utils
+package com.ipleiria.mothertongue.vision_processor
 
 import android.graphics.Bitmap
 import com.google.firebase.ml.common.FirebaseMLException
+import com.ipleiria.mothertongue.utils.FrameMetadata
+import com.ipleiria.mothertongue.utils.GraphicOverlay
 import java.nio.ByteBuffer
 
 /** An inferface to process the images with different ML Kit detectors and custom image models. */

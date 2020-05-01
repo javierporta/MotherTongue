@@ -20,7 +20,7 @@ import android.view.WindowManager;
 import com.google.android.gms.common.images.Size;
 import com.ipleiria.mothertongue.utils.FrameMetadata;
 import com.ipleiria.mothertongue.utils.GraphicOverlay;
-import com.ipleiria.mothertongue.utils.VisionImageProcessor;
+import com.ipleiria.mothertongue.vision_processor.VisionImageProcessor;
 
 import java.io.IOException;
 import java.lang.Thread.State;

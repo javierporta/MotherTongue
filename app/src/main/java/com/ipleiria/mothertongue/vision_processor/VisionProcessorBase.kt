@@ -6,7 +6,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.ipleiria.mothertongue.utils.BitmapUtils
 import com.ipleiria.mothertongue.utils.FrameMetadata
 import com.ipleiria.mothertongue.utils.GraphicOverlay
-import com.ipleiria.mothertongue.utils.VisionImageProcessor
+import com.ipleiria.mothertongue.vision_processor.VisionImageProcessor
 import java.nio.ByteBuffer
 
 /**
@@ -16,7 +16,8 @@ import java.nio.ByteBuffer
  *
  * @param <T> The type of the detected feature.
  */
-abstract class VisionProcessorBase<T> : VisionImageProcessor {
+abstract class VisionProcessorBase<T> :
+    VisionImageProcessor {
 
     // To keep the latest images and its metadata.
     @GuardedBy("this")
