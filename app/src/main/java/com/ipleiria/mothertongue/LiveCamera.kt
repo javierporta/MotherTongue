@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.ml.common.FirebaseMLException
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
@@ -48,6 +49,7 @@ class LiveCamera : AppCompatActivity() {
 
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)
+            startCameraSource()
         } else {
             getRuntimePermissions()
         }
@@ -81,13 +83,17 @@ class LiveCamera : AppCompatActivity() {
             TAG,
             "Using Object Detector Processor"
         )
-        val objectDetectorOptions =
-            FirebaseVisionObjectDetectorOptions.Builder()
-                .setDetectorMode(FirebaseVisionObjectDetectorOptions.STREAM_MODE)
-                .enableClassification().build()
-        cameraSource!!.setMachineLearningFrameProcessor(
-            ObjectRecognitionProcessor(objectDetectorOptions)
-        )
+        try {
+            val objectDetectorOptions =
+                FirebaseVisionObjectDetectorOptions.Builder()
+                    .setDetectorMode(FirebaseVisionObjectDetectorOptions.STREAM_MODE)
+                    .enableClassification().build()
+            cameraSource!!.setMachineLearningFrameProcessor(
+                ObjectRecognitionProcessor(objectDetectorOptions)
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "can not create camera source: $model")
+        }
     }
 
     private fun startCameraSource() {

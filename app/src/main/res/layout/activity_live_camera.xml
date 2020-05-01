@@ -3,6 +3,8 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#000"
+    android:keepScreenOn="true"
     tools:context=".LiveCamera"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
