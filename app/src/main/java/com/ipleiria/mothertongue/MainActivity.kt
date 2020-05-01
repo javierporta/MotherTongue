@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        //bind mainModel ToDo: Create language spinner adapter. Get current lanuage and current place
+        //bind mainModel ToDo: Create language spinner adapter. Get current language and current place
         binding.mainModel = mainModel
 
     }
