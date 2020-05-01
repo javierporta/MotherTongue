@@ -12,6 +12,7 @@ import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 import com.ipleiria.mothertongue.automl.AutoMLImageLabelerProcessor
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
+import com.ipleiria.mothertongue.object_detection.ImageLabelingProcessor
 import com.ipleiria.mothertongue.object_detection.ObjectRecognitionProcessor
 import com.ipleiria.mothertongue.utils.GraphicOverlay
 import java.io.IOException
@@ -90,13 +91,16 @@ class LiveCamera : AppCompatActivity() {
                     .setDetectorMode(FirebaseVisionObjectDetectorOptions.STREAM_MODE)
                     .enableClassification().build()
             //object processor
-            cameraSource!!.setMachineLearningFrameProcessor(
-                ObjectRecognitionProcessor(
-                    objectDetectorOptions
-                )
-            )
-
-            // cameraSource?.setMachineLearningFrameProcessor(AutoMLImageLabelerProcessor(this, AutoMLImageLabelerProcessor.Mode.LIVE_PREVIEW))
+//            cameraSource!!.setMachineLearningFrameProcessor(
+//                ObjectRecognitionProcessor(
+//                    objectDetectorOptions
+//                )
+//            )
+            //autoML
+            //cameraSource?.setMachineLearningFrameProcessor(AutoMLImageLabelerProcessor(this, AutoMLImageLabelerProcessor.Mode.LIVE_PREVIEW))
+            //ToDo: JOin with object processor
+            //Todo: Try autoML
+            cameraSource?.setMachineLearningFrameProcessor(ImageLabelingProcessor())
 
         } catch (e: Exception) {
             Log.e(TAG, "can not create camera source: $model")
