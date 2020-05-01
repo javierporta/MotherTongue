@@ -7,8 +7,10 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
+import com.ipleiria.mothertongue.object_detection.ObjectRecognitionProcessor
 import com.ipleiria.mothertongue.utils.GraphicOverlay
 import java.io.IOException
 import java.util.*
@@ -79,13 +81,13 @@ class LiveCamera : AppCompatActivity() {
             TAG,
             "Using Object Detector Processor"
         )
-//        val objectDetectorOptions =
-//            FirebaseVisionObjectDetectorOptions.Builder()
-//                .setDetectorMode(FirebaseVisionObjectDetectorOptions.STREAM_MODE)
-//                .enableClassification().build()
-//        cameraSource!!.setMachineLearningFrameProcessor(
-//            ObjectDetectorProcessor(objectDetectorOptions)
-//        )
+        val objectDetectorOptions =
+            FirebaseVisionObjectDetectorOptions.Builder()
+                .setDetectorMode(FirebaseVisionObjectDetectorOptions.STREAM_MODE)
+                .enableClassification().build()
+        cameraSource!!.setMachineLearningFrameProcessor(
+            ObjectRecognitionProcessor(objectDetectorOptions)
+        )
     }
 
     private fun startCameraSource() {

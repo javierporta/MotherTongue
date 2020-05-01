@@ -542,7 +542,7 @@ class CameraSource(protected var activity: Activity, overlay: GraphicOverlay) {
                     synchronized(processorLock) {
                         Log.d(TAG, "Process an image")
                         frameProcessor?.process(
-                            data,
+                            data!!,
                             FrameMetadata.Builder()
                                 .setWidth(previewSize!!.width)
                                 .setHeight(previewSize!!.height)

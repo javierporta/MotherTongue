@@ -63,7 +63,7 @@ class GraphicOverlay(
          *
          * @param canvas drawing canvas
          */
-        abstract fun draw(canvas: Canvas?)
+        abstract fun draw(canvas: Canvas)
 
         /**
          * Adjusts a horizontal value of the supplied value from the preview scale to the view scale.
