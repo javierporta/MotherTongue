@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
 import androidx.databinding.DataBindingUtil
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
 import com.ipleiria.mothertongue.models.MainModel
