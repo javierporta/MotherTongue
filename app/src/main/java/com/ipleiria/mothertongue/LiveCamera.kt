@@ -7,11 +7,13 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.google.firebase.ml.common.FirebaseMLException
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 import com.ipleiria.mothertongue.automl.AutoMLImageLabelerProcessor
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
+import com.ipleiria.mothertongue.databinding.ActivityLiveCameraBinding
 import com.ipleiria.mothertongue.object_detection.ImageLabelingProcessor
 import com.ipleiria.mothertongue.object_detection.ObjectRecognitionProcessor
 import com.ipleiria.mothertongue.utils.GraphicOverlay
@@ -29,21 +31,21 @@ class LiveCamera : AppCompatActivity() {
     private val OBJECT_DETECTION = "Object Detection"
     val selectedModel = OBJECT_DETECTION
 
+    private lateinit var binding: ActivityLiveCameraBinding
+
     private val TAG = "LiveCamera"
 
     //endregion
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_live_camera)
-
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_live_camera)
         //FirebaseApp.initializeApp(this);
 
-        //ToDo: ADD BINDING!
-        preview = findViewById<CameraSourcePreview>(R.id.camera_source_preview);
+        preview = binding.cameraSourcePreview;
         if (preview == null) {
             Log.d(TAG, "Preview is null");
         }
-        graphicOverlay = findViewById<GraphicOverlay>(R.id.graphics_overlay);
+        graphicOverlay = binding.graphicsOverlay
         if (graphicOverlay == null) {
             Log.d(TAG, "graphicOverlay is null");
         }
