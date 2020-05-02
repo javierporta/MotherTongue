@@ -38,11 +38,17 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
-    //Firebase dependencies
+    //Begin Firebase dependencies
+    //Computer vision
     implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
     implementation 'com.google.firebase:firebase-ml-vision-image-label-model:20.0.1'
     implementation 'com.google.firebase:firebase-ml-vision-object-detection-model:19.0.5'
+    //ML
     implementation 'com.google.firebase:firebase-ml-vision-automl:18.0.5'
+    //Translations
+    implementation 'com.google.firebase:firebase-ml-natural-language:22.0.0'
+    implementation 'com.google.firebase:firebase-ml-natural-language-translate-model:20.0.8'
+    //End Firebase dependencies
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

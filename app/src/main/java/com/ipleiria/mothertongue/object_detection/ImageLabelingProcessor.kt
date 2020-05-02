@@ -8,10 +8,13 @@ import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
+import com.ipleiria.mothertongue.translations.OnGetTranslationListener
+import com.ipleiria.mothertongue.translations.TranslatorService
 import com.ipleiria.mothertongue.utils.CameraImageGraphic
 import com.ipleiria.mothertongue.utils.FrameMetadata
 import com.ipleiria.mothertongue.utils.GraphicOverlay
 import java.io.IOException
+
 
 /** Custom Image Classifier Demo.  */
 class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionImageLabel>>() {
@@ -42,7 +45,25 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionImageLabel
             val imageGraphic = CameraImageGraphic(graphicOverlay, image!!)
             graphicOverlay.add(imageGraphic)
         }
-        val labelGraphic = LabelGraphic(graphicOverlay, labels)
+
+        //toDo: Add as function
+        var translatedLabels = mutableListOf<String>()
+        for (label: FirebaseVisionImageLabel in labels) {
+            val translatorService = TranslatorService("eng", "es")
+            translatorService.translate(label.text).continueWith {
+                if (it.isComplete) {
+                    if (it.isSuccessful) {
+                        //Showing Translated -> Original
+                        translatedLabels.add(it.result!! + " -> " + label.text)
+                    } else {
+                        //Error when translating. Add english name
+                        translatedLabels.add(label.text)
+                    }
+                }
+            }
+        }
+
+        val labelGraphic = LabelGraphic(graphicOverlay, translatedLabels)
         graphicOverlay.add(labelGraphic)
         graphicOverlay.postInvalidate()
     }
@@ -55,4 +76,6 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionImageLabel
 
         private const val TAG = "ImageLabelingProcessor"
     }
+
+
 }
