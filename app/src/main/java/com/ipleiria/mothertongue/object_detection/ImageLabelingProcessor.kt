@@ -4,6 +4,7 @@ import VisionProcessorBase
 import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
@@ -49,7 +50,8 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionImageLabel
         //toDo: Add as function
         var translatedLabels = mutableListOf<String>()
         for (label: FirebaseVisionImageLabel in labels) {
-            val translatorService = TranslatorService("eng", "es")
+            val translatorService =
+                TranslatorService(FirebaseTranslateLanguage.DE) //german only for now
             translatorService.translate(label.text).continueWith {
                 if (it.isComplete) {
                     if (it.isSuccessful) {
