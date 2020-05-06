@@ -35,7 +35,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="10dp"
-        android:text="@string/what_langauge_do_you_want_to_learn_today"
+        android:text="@string/what_language_do_you_want_to_explore_today"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"

@@ -35,9 +35,14 @@ class LiveCamera : AppCompatActivity() {
 
     private val TAG = "LiveCamera"
 
+    private var firebaseSelectedLanguageEnum: Int = 0
+
     //endregion
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Get intent param
+        firebaseSelectedLanguageEnum = intent.getIntExtra("firebaseSelectedLanguageEnum", 0)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_live_camera)
         //FirebaseApp.initializeApp(this);
 
@@ -102,7 +107,11 @@ class LiveCamera : AppCompatActivity() {
             //cameraSource?.setMachineLearningFrameProcessor(AutoMLImageLabelerProcessor(this, AutoMLImageLabelerProcessor.Mode.LIVE_PREVIEW))
             //ToDo: JOin with object processor
             //Todo: Do we need autoML or it is enough
-            cameraSource?.setMachineLearningFrameProcessor(ImageLabelingProcessor())
+            cameraSource?.setMachineLearningFrameProcessor(
+                ImageLabelingProcessor(
+                    firebaseSelectedLanguageEnum
+                )
+            )
 
         } catch (e: Exception) {
             Log.e(TAG, "can not create camera source: $model")

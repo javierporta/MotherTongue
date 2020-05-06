@@ -18,7 +18,8 @@ import java.io.IOException
 
 
 /** Custom Image Classifier Demo.  */
-class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionImageLabel>>() {
+class ImageLabelingProcessor(val targetLanguage: Int) :
+    VisionProcessorBase<List<FirebaseVisionImageLabel>>() {
 
     private val detector: FirebaseVisionImageLabeler =
         FirebaseVision.getInstance().onDeviceImageLabeler
@@ -51,7 +52,7 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionImageLabel
         var translatedLabels = mutableListOf<String>()
         for (label: FirebaseVisionImageLabel in labels) {
             val translatorService =
-                TranslatorService(FirebaseTranslateLanguage.DE) //german only for now
+                TranslatorService(targetLanguage)
             translatorService.translate(label.text).continueWith {
                 if (it.isComplete) {
                     if (it.isSuccessful) {
