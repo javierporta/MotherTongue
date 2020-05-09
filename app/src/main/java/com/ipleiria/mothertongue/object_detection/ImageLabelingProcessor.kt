@@ -3,6 +3,7 @@ package com.ipleiria.mothertongue.object_detection
 import VisionProcessorBase
 import android.graphics.Bitmap
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
 import com.google.firebase.ml.vision.FirebaseVision
@@ -15,12 +16,15 @@ import com.ipleiria.mothertongue.utils.CameraImageGraphic
 import com.ipleiria.mothertongue.utils.FrameMetadata
 import com.ipleiria.mothertongue.utils.GraphicOverlay
 import java.io.IOException
+import kotlin.coroutines.coroutineContext
 
 
 /** Custom Image Classifier Demo.  */
 class ImageLabelingProcessor(val targetLanguage: Int, val objectToSearch: String) :
     VisionProcessorBase<List<FirebaseVisionImageLabel>>() {
 
+    var hasFoundObject = false
+    
     private val detector: FirebaseVisionImageLabeler =
         FirebaseVision.getInstance().onDeviceImageLabeler
 
@@ -48,15 +52,14 @@ class ImageLabelingProcessor(val targetLanguage: Int, val objectToSearch: String
             graphicOverlay.add(imageGraphic)
         }
 
-        var translatedLabels = getTranslatedLabels(labels)
+        getTranslatedLabels(labels, graphicOverlay)
 
-
-        val labelGraphic = LabelGraphic(graphicOverlay, translatedLabels, objectToSearch)
-        graphicOverlay.add(labelGraphic)
-        graphicOverlay.postInvalidate()
     }
 
-    private fun getTranslatedLabels(labels: List<FirebaseVisionImageLabel>): MutableList<String> {
+    private fun getTranslatedLabels(
+        labels: List<FirebaseVisionImageLabel>,
+        graphicOverlay: GraphicOverlay
+    ): MutableList<String> {
         var translatedLabels = mutableListOf<String>()
         for (label: FirebaseVisionImageLabel in labels) {
             val translatorService =
@@ -64,8 +67,7 @@ class ImageLabelingProcessor(val targetLanguage: Int, val objectToSearch: String
             translatorService.translate(label.text).continueWith {
                 if (it.isComplete) {
                     if (it.isSuccessful) {
-                        //Showing Translated -> Original
-                        translatedLabels.add(it.result!! + " -> " + label.text)
+                        onSuccessTranslatingLabels(translatedLabels, it, graphicOverlay)
                     } else {
                         //Error when translating. Add english name
                         translatedLabels.add(label.text)
@@ -74,6 +76,32 @@ class ImageLabelingProcessor(val targetLanguage: Int, val objectToSearch: String
             }
         }
         return translatedLabels
+    }
+
+    private fun onSuccessTranslatingLabels(
+        translatedLabels: MutableList<String>,
+        it: Task<String>,
+        graphicOverlay: GraphicOverlay
+    ) {
+
+        translatedLabels.add(it.result!!)
+        for (translatedLabel in translatedLabels) {
+            if (translatedLabel.toLowerCase().contains(objectToSearch.toLowerCase())) {
+                print("Encontro el objeto")
+                hasFoundObject = true
+                break
+            }
+        }
+        var labelGraphic: LabelGraphic
+        if (!hasFoundObject) {
+            labelGraphic = LabelGraphic(graphicOverlay, translatedLabels, objectToSearch)
+        } else {
+            //ToDo: Pride the user with different phrase, save points somewhere, start a countdown, make a sound!
+            labelGraphic = LabelGraphic(graphicOverlay, emptyList(), "Congrats! you found it!!")
+        }
+        graphicOverlay.add(labelGraphic)
+        graphicOverlay.postInvalidate()
+
     }
 
     override fun onFailure(e: Exception) {
