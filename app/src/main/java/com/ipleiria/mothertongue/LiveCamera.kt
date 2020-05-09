@@ -86,30 +86,14 @@ class LiveCamera : AppCompatActivity() {
             cameraSource = CameraSource(this, graphicOverlay!!)
             cameraSource!!.setFacing(CameraSource.CAMERA_FACING_BACK)
         }
-        //ToDo: Add object detecto here. Use it only if time. To swuare the main object of the image. Not really a need on this projet but a nice to have
-        //cameraSource.setMachineLearningFrameProcessor(TextRecognitionProcessor())
         Log.i(
             TAG,
-            "Using Object Detector Processor"
+            "Using ImageLabelingProcessor"
         )
         try {
-//            val objectDetectorOptions =
-//                FirebaseVisionObjectDetectorOptions.Builder()
-//                    .setDetectorMode(FirebaseVisionObjectDetectorOptions.STREAM_MODE)
-//                    .enableClassification().build()
-//            //object processor
-//            cameraSource!!.setMachineLearningFrameProcessor(
-//                ObjectRecognitionProcessor(
-//                    objectDetectorOptions
-//                )
-//            )
-            //autoML
-            //cameraSource?.setMachineLearningFrameProcessor(AutoMLImageLabelerProcessor(this, AutoMLImageLabelerProcessor.Mode.LIVE_PREVIEW))
-            //ToDo: JOin with object processor
-            //Todo: Do we need autoML or it is enough
             cameraSource?.setMachineLearningFrameProcessor(
                 ImageLabelingProcessor(
-                    firebaseSelectedLanguageEnum
+                    firebaseSelectedLanguageEnum, "Taza" //WARNING, hardcoded value to test
                 )
             )
 
