@@ -18,7 +18,7 @@ import java.io.IOException
 
 
 /** Custom Image Classifier Demo.  */
-class ImageLabelingProcessor(val targetLanguage: Int) :
+class ImageLabelingProcessor(val targetLanguage: Int, val objectToSearch: String) :
     VisionProcessorBase<List<FirebaseVisionImageLabel>>() {
 
     private val detector: FirebaseVisionImageLabeler =
@@ -48,7 +48,15 @@ class ImageLabelingProcessor(val targetLanguage: Int) :
             graphicOverlay.add(imageGraphic)
         }
 
-        //toDo: Add as function
+        var translatedLabels = getTranslatedLabels(labels)
+
+
+        val labelGraphic = LabelGraphic(graphicOverlay, translatedLabels, objectToSearch)
+        graphicOverlay.add(labelGraphic)
+        graphicOverlay.postInvalidate()
+    }
+
+    private fun getTranslatedLabels(labels: List<FirebaseVisionImageLabel>): MutableList<String> {
         var translatedLabels = mutableListOf<String>()
         for (label: FirebaseVisionImageLabel in labels) {
             val translatorService =
@@ -65,10 +73,7 @@ class ImageLabelingProcessor(val targetLanguage: Int) :
                 }
             }
         }
-
-        val labelGraphic = LabelGraphic(graphicOverlay, translatedLabels)
-        graphicOverlay.add(labelGraphic)
-        graphicOverlay.postInvalidate()
+        return translatedLabels
     }
 
     override fun onFailure(e: Exception) {

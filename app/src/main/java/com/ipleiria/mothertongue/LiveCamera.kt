@@ -86,7 +86,7 @@ class LiveCamera : AppCompatActivity() {
             cameraSource = CameraSource(this, graphicOverlay!!)
             cameraSource!!.setFacing(CameraSource.CAMERA_FACING_BACK)
         }
-        //ToDo: Add object detecto here. Use it only if time. To swuare the main object of the image. Not really a need on this projet but a nice to have
+        //ToDo: Add object detector here. Use it only if time. To square the main object of the image. Not really a need on this projet but a nice to have
         //cameraSource.setMachineLearningFrameProcessor(TextRecognitionProcessor())
         Log.i(
             TAG,
@@ -109,7 +109,7 @@ class LiveCamera : AppCompatActivity() {
             //Todo: Do we need autoML or it is enough
             cameraSource?.setMachineLearningFrameProcessor(
                 ImageLabelingProcessor(
-                    firebaseSelectedLanguageEnum
+                    firebaseSelectedLanguageEnum, "Taza" //WARNING, hardcoded value to test
                 )
             )
 

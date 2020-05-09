@@ -9,12 +9,18 @@ import com.ipleiria.mothertongue.utils.GraphicOverlay
 /** Graphic instance for rendering a label within an associated graphic overlay view.  */
 class LabelGraphic(
     private val overlay: GraphicOverlay,
-    private val labels: List<String>
+    private val labels: List<String>,
+    private val objectToSearch: String
 ) : GraphicOverlay.Graphic(overlay) {
 
     private val textPaint = Paint().apply {
         color = Color.WHITE
         textSize = 60.0f
+    }
+
+    private val objectToSearchPaint = Paint().apply {
+        color = Color.BLUE
+        textSize = 100.0f
     }
 
     @Synchronized
@@ -26,5 +32,12 @@ class LabelGraphic(
             canvas.drawText(label, x, y, textPaint)
             y -= 62.0f
         }
+
+        canvas.drawText(
+            objectToSearch,
+            overlay.width / 4.0f,
+            overlay.height - 10f,
+            objectToSearchPaint
+        )
     }
 }
