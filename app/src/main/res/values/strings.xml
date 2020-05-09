@@ -48,4 +48,7 @@
         <item>French</item>
         <item>German</item>
     </string-array>
+
+    <!-- Google Awareness API_KEY -->
+    <string name="API_KEY">AIzaSyCgfBVD7rvd0FaTgs0Yqwx5X_E094G6OwM</string>
 </resources>
