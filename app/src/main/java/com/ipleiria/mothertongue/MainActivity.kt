@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding.languageSpinner.onItemSelectedListener = this
     }
 
-    override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         // An item was selected. You can retrieve the selected item using
         val selectedlanguage = parent.getItemAtPosition(pos)
 
