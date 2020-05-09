@@ -11,7 +11,9 @@ import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
+import com.ipleiria.mothertongue.google_palces.PlacesApiClient
 import com.ipleiria.mothertongue.models.MainModel
+import com.ipleiria.mothertongue.services.ContextService
 import com.ipleiria.mothertongue.translations.TranslatorService
 
 
@@ -31,6 +33,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         //bind mainModel
         binding.mainModel = mainModel
+
+        ContextService.instance.detectPlace(this);
 
     }
 

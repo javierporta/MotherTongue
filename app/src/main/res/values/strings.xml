@@ -50,5 +50,5 @@
     </string-array>
 
     <!-- Google Awareness API_KEY -->
-    <string name="API_KEY">AIzaSyCgfBVD7rvd0FaTgs0Yqwx5X_E094G6OwM</string>
+    <string name="GOOGLE_PLACE_API_KEY">AIzaSyBgBdyuMPbS1SjoZVaD_yOOTfzxZVBiSEo</string>
 </resources>
