@@ -103,7 +103,8 @@ class ImageLabelingProcessor(val targetLanguage: Int, val objectToSearch: String
             //ToDo: Prise the user with different phrase, save points somewhere, make a sound!
             labelGraphic = LabelGraphic(graphicOverlay, emptyList(), "Congrats! you found it!!")
 
-            //ToDo: can we stop processing frames here for a while???. BUG: is user keeps the camera in the object congrat label overlaps with the other label
+            //ToDo: can we stop processing frames here for a while???. BUG: is user keeps the camera in the object congrat label overlaps with the other label.
+            //ToDO: BUG UPDATE: This will not be a problem when we change the object to be searched
             Timer("SettingUp", false).schedule(CONGRATING_USER_TIME) {
                 //ToDo: pick next object from a list!
                 hasFoundObject = false
