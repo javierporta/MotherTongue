@@ -14,6 +14,7 @@ import com.ipleiria.mothertongue.automl.AutoMLImageLabelerProcessor
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
 import com.ipleiria.mothertongue.databinding.ActivityLiveCameraBinding
+import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.object_detection.ImageLabelingProcessor
 import com.ipleiria.mothertongue.object_detection.ObjectRecognitionProcessor
 import com.ipleiria.mothertongue.utils.GraphicOverlay
@@ -91,10 +92,17 @@ class LiveCamera : AppCompatActivity() {
             "Using ImageLabelingProcessor"
         )
         try {
+            //ToDo: get list of GamePhrases from MainActivity depending on Context (location and time). Faking one here
+            var gamePhrases: List<GamePhrase> = listOf(
+                GamePhrase(phrase = "Taza", wasGuessed = false),
+                GamePhrase(phrase = "Computadora", wasGuessed = false),
+                GamePhrase(phrase = "Silla", wasGuessed = false)
+            )
+
             cameraSource?.setMachineLearningFrameProcessor(
                 ImageLabelingProcessor(
                     this,
-                    firebaseSelectedLanguageEnum, "Taza" //WARNING, hardcoded value to test
+                    firebaseSelectedLanguageEnum, gamePhrases //WARNING, hardcoded value to test
                 )
             )
 

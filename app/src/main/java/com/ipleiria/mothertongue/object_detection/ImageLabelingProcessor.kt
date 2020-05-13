@@ -11,6 +11,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
 import com.ipleiria.mothertongue.R
+import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.translations.TranslatorService
 import com.ipleiria.mothertongue.utils.CameraImageGraphic
 import com.ipleiria.mothertongue.utils.FrameMetadata
@@ -24,7 +25,7 @@ import kotlin.concurrent.schedule
 class ImageLabelingProcessor(
     val liveCameraContext: Context,
     val targetLanguage: Int,
-    val objectToSearch: String
+    var objectsToSearch: List<GamePhrase>
 ) :
     VisionProcessorBase<List<FirebaseVisionImageLabel>>() {
 
@@ -32,6 +33,7 @@ class ImageLabelingProcessor(
     val CONGRATING_USER_TIME = 5000L //MS
     val mediaPlayer: MediaPlayer = MediaPlayer.create(this.liveCameraContext, R.raw.success_sound)
 
+    lateinit var currentObjectToSearch: GamePhrase
 
     private val detector: FirebaseVisionImageLabeler =
         FirebaseVision.getInstance().onDeviceImageLabeler
@@ -45,6 +47,9 @@ class ImageLabelingProcessor(
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionImageLabel>> {
+        //get first object to search
+        getNextPhrase()
+
         return detector.processImage(image)
     }
 
@@ -94,7 +99,9 @@ class ImageLabelingProcessor(
 
         translatedLabels.add(it.result!!)
         for (translatedLabel in translatedLabels) {
-            if (translatedLabel.toLowerCase().contains(objectToSearch.toLowerCase())) {
+            if (translatedLabel.toLowerCase()
+                    .contains(currentObjectToSearch.phrase.toLowerCase())
+            ) {
                 print("Encontro el objeto")
                 hasFoundObject = true
                 break
@@ -102,13 +109,18 @@ class ImageLabelingProcessor(
         }
         var labelGraphic: LabelGraphic
         if (!hasFoundObject) {
-            labelGraphic = LabelGraphic(graphicOverlay, translatedLabels, objectToSearch)
+            labelGraphic =
+                LabelGraphic(graphicOverlay, translatedLabels, currentObjectToSearch.phrase)
         } else {
             //Object found by the user
             //ToDo: Prise the user with different phrase, save points somewhere
             labelGraphic = LabelGraphic(graphicOverlay, emptyList(), "Congrats! you found it!!")
+
+            this.markCurrentPhraseAsGuessed();
+
             //Play a sound
             mediaPlayer.start()
+
             //ToDo: can we stop processing frames here for a while???. BUG: is user keeps the camera in the object congrat label overlaps with the other label.
             //ToDO: BUG UPDATE: This will not be a problem when we change the object to be searched
             Timer("SettingUp", false).schedule(CONGRATING_USER_TIME) {
@@ -124,6 +136,25 @@ class ImageLabelingProcessor(
 
     override fun onFailure(e: Exception) {
         Log.w(TAG, "Label detection failed.$e")
+    }
+
+    fun getNextPhrase() {
+        try {
+
+            //Get the first phrase that was not guessed
+            this.currentObjectToSearch = objectsToSearch.first { !it.wasGuessed }
+
+        } catch (ex: java.lang.Exception) {
+            //User guessed all phrases
+            // ToDo: go back to activity
+            print("Go back!")
+        }
+    }
+
+    fun markCurrentPhraseAsGuessed() {
+        //ToDo write in a persistant store
+        this.currentObjectToSearch.wasGuessed = true
+        getNextPhrase()
     }
 
     companion object {
