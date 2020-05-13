@@ -93,6 +93,7 @@ class LiveCamera : AppCompatActivity() {
         try {
             cameraSource?.setMachineLearningFrameProcessor(
                 ImageLabelingProcessor(
+                    this,
                     firebaseSelectedLanguageEnum, "Taza" //WARNING, hardcoded value to test
                 )
             )

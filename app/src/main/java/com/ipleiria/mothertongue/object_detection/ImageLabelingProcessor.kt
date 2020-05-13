@@ -1,33 +1,38 @@
 package com.ipleiria.mothertongue.object_detection
 
 import VisionProcessorBase
+import android.content.Context
 import android.graphics.Bitmap
+import android.media.MediaPlayer
 import android.util.Log
-import android.widget.Toast
 import com.google.android.gms.tasks.Task
-import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
-import com.ipleiria.mothertongue.translations.OnGetTranslationListener
+import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.translations.TranslatorService
 import com.ipleiria.mothertongue.utils.CameraImageGraphic
 import com.ipleiria.mothertongue.utils.FrameMetadata
 import com.ipleiria.mothertongue.utils.GraphicOverlay
 import java.io.IOException
-
-import java.util.Timer
+import java.util.*
 import kotlin.concurrent.schedule
 
 
 /** Custom Image Classifier Demo.  */
-class ImageLabelingProcessor(val targetLanguage: Int, val objectToSearch: String) :
+class ImageLabelingProcessor(
+    val liveCameraContext: Context,
+    val targetLanguage: Int,
+    val objectToSearch: String
+) :
     VisionProcessorBase<List<FirebaseVisionImageLabel>>() {
 
     var hasFoundObject = false
     val CONGRATING_USER_TIME = 5000L //MS
-    
+    val mediaPlayer: MediaPlayer = MediaPlayer.create(this.liveCameraContext, R.raw.success_sound)
+
+
     private val detector: FirebaseVisionImageLabeler =
         FirebaseVision.getInstance().onDeviceImageLabeler
 
@@ -100,9 +105,10 @@ class ImageLabelingProcessor(val targetLanguage: Int, val objectToSearch: String
             labelGraphic = LabelGraphic(graphicOverlay, translatedLabels, objectToSearch)
         } else {
             //Object found by the user
-            //ToDo: Prise the user with different phrase, save points somewhere, make a sound!
+            //ToDo: Prise the user with different phrase, save points somewhere
             labelGraphic = LabelGraphic(graphicOverlay, emptyList(), "Congrats! you found it!!")
-
+            //Play a sound
+            mediaPlayer.start()
             //ToDo: can we stop processing frames here for a while???. BUG: is user keeps the camera in the object congrat label overlaps with the other label.
             //ToDO: BUG UPDATE: This will not be a problem when we change the object to be searched
             Timer("SettingUp", false).schedule(CONGRATING_USER_TIME) {
