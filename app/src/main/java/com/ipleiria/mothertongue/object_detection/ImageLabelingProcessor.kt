@@ -119,12 +119,10 @@ class ImageLabelingProcessor(
             this.markCurrentPhraseAsGuessed();
 
             //Play a sound
+            //Todo: bug: There are frames that are still coming, so sound might be reproduced more than one time
             mediaPlayer.start()
 
-            //ToDo: can we stop processing frames here for a while???. BUG: is user keeps the camera in the object congrat label overlaps with the other label.
-            //ToDO: BUG UPDATE: This will not be a problem when we change the object to be searched
             Timer("SettingUp", false).schedule(CONGRATING_USER_TIME) {
-                //ToDo: pick next object from a list!
                 hasFoundObject = false
             }
 
