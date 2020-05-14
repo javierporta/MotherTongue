@@ -80,9 +80,18 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
 
         if (firebaseSelectedLanguageEnum != FirebaseTranslateLanguage.EN) { //Only for languages to be translated (not english)
-            //ToDO: Add spinner here and block ui, download may take a while! Models are 30mb roughly
+
+            binding.pBar.visibility = View.VISIBLE
+            binding.playButton.isClickable = false
+            binding.playButton.isEnabled = false
+
             TranslatorService(firebaseSelectedLanguageEnum).downloadModelIfNeeded()
                 .addOnSuccessListener {
+
+                    binding.playButton.isClickable = true
+                    binding.playButton.isEnabled = true
+                    binding.pBar.visibility = View.GONE
+
                     Toast.makeText(
                         applicationContext,
                         "Language is ready to use",
