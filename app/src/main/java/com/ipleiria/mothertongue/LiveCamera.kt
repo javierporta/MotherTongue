@@ -20,6 +20,7 @@ import com.ipleiria.mothertongue.object_detection.ObjectRecognitionProcessor
 import com.ipleiria.mothertongue.utils.GraphicOverlay
 import java.io.IOException
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class LiveCamera : AppCompatActivity() {
@@ -37,12 +38,16 @@ class LiveCamera : AppCompatActivity() {
     private val TAG = "LiveCamera"
 
     private var firebaseSelectedLanguageEnum: Int = 0
+    private var gamePhrases: ArrayList<GamePhrase>? = null
 
     //endregion
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Get intent param
         firebaseSelectedLanguageEnum = intent.getIntExtra("firebaseSelectedLanguageEnum", 0)
+
+        val extras = intent.extras
+        gamePhrases = extras?.getParcelableArrayList<GamePhrase>("gamePhrases")
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_live_camera)
         //FirebaseApp.initializeApp(this);
@@ -92,17 +97,10 @@ class LiveCamera : AppCompatActivity() {
             "Using ImageLabelingProcessor"
         )
         try {
-            //ToDo: get list of GamePhrases from MainActivity depending on Context (location and time). Faking one here
-            var gamePhrases: List<GamePhrase> = listOf(
-                GamePhrase(phrase = "Taza", wasGuessed = false),
-                GamePhrase(phrase = "Computadora", wasGuessed = false),
-                GamePhrase(phrase = "Silla", wasGuessed = false)
-            )
-
             cameraSource?.setMachineLearningFrameProcessor(
                 ImageLabelingProcessor(
                     this,
-                    firebaseSelectedLanguageEnum, gamePhrases //WARNING, hardcoded value to test
+                    firebaseSelectedLanguageEnum, gamePhrases!!.toList()
                 )
             )
 

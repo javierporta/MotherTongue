@@ -74,9 +74,8 @@ class ImageLabelingProcessor(
         graphicOverlay: GraphicOverlay
     ): MutableList<String> {
         var translatedLabels = mutableListOf<String>()
+        val translatorService = TranslatorService(targetLanguage)
         for (label: FirebaseVisionImageLabel in labels) {
-            val translatorService =
-                TranslatorService(targetLanguage)
             translatorService.translate(label.text).continueWith {
                 if (it.isComplete) {
                     if (it.isSuccessful) {
@@ -100,9 +99,8 @@ class ImageLabelingProcessor(
         translatedLabels.add(it.result!!)
         for (translatedLabel in translatedLabels) {
             if (translatedLabel.toLowerCase()
-                    .contains(currentObjectToSearch.phrase.toLowerCase())
+                    .contains(currentObjectToSearch.phrase!!.toLowerCase())
             ) {
-                print("Encontro el objeto")
                 hasFoundObject = true
                 break
             }
@@ -110,7 +108,7 @@ class ImageLabelingProcessor(
         var labelGraphic: LabelGraphic
         if (!hasFoundObject) {
             labelGraphic =
-                LabelGraphic(graphicOverlay, translatedLabels, currentObjectToSearch.phrase)
+                LabelGraphic(graphicOverlay, translatedLabels, currentObjectToSearch.phrase!!)
         } else {
             //Object found by the user
             //ToDo: Prise the user with different phrase, save points somewhere
@@ -120,7 +118,8 @@ class ImageLabelingProcessor(
 
             //Play a sound
             //Todo: bug: There are frames that are still coming, so sound might be reproduced more than one time
-            mediaPlayer.start()
+            if (hasFoundObject)
+                mediaPlayer.start()
 
             Timer("SettingUp", false).schedule(CONGRATING_USER_TIME) {
                 hasFoundObject = false

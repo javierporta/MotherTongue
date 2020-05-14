@@ -22,7 +22,6 @@ class TranslatorService(private val finalLang: Int) {
 
     fun translate(text: String): Task<String> {
         return englishTranslator.translate(text)
-
     }
 
     fun downloadModelIfNeeded()
