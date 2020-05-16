@@ -121,10 +121,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     fun onClickPlayButton(view: View) {
 
-        //Todo: Pass list depending on context. Now using #HOME#
+        //Todo: Pass list depending on context. Now using #HOME category#
         //Translate phrases
         var englishGamePhrases = arrayListOf(
-            GamePhrase(phrase = "Cup", wasGuessed = false),
+            GamePhrase(phrase = "Sunglasses", wasGuessed = false),
             GamePhrase(phrase = "Computer", wasGuessed = false),
             GamePhrase(phrase = "Chair", wasGuessed = false)
         )

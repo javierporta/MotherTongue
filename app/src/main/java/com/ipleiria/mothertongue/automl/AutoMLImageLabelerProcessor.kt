@@ -119,7 +119,7 @@ constructor(private val context: Context, private val mode: Mode) :
             )
             graphicOverlay.add(imageGraphic)
         }
-        val labelGraphic = LabelGraphic(graphicOverlay, labels.map { it.text }, "")
+        val labelGraphic = LabelGraphic(graphicOverlay, labels.map { it.text })
         graphicOverlay.add(labelGraphic)
         graphicOverlay.postInvalidate()
     }

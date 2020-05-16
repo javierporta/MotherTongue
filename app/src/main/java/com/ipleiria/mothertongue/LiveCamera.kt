@@ -2,28 +2,37 @@ package com.ipleiria.mothertongue
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.google.firebase.ml.common.FirebaseMLException
-import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
-import com.ipleiria.mothertongue.automl.AutoMLImageLabelerProcessor
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
 import com.ipleiria.mothertongue.databinding.ActivityLiveCameraBinding
 import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.object_detection.ImageLabelingProcessor
-import com.ipleiria.mothertongue.object_detection.ObjectRecognitionProcessor
 import com.ipleiria.mothertongue.utils.GraphicOverlay
 import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
 
 
 class LiveCamera : AppCompatActivity() {
+
+    companion object {
+        lateinit var mHandler: Handler
+        val ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY: String =
+            "ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW"
+        val ACTION_TOAST_KEY: String = "ACTION_TOAST"
+    }
 
     private var cameraSource: CameraSource? = null
     private var preview: CameraSourcePreview? = null
@@ -39,6 +48,13 @@ class LiveCamera : AppCompatActivity() {
 
     private var firebaseSelectedLanguageEnum: Int = 0
     private var gamePhrases: ArrayList<GamePhrase>? = null
+
+    private var lastFeedbackCurrentWord: String? = null
+    private var lastFeedbackToast: String? = null
+
+    private lateinit var mediaPlayer: MediaPlayer
+
+    val TIME_TO_STOP_AFTER_FIND = 3000L //MS
 
     //endregion
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,12 +77,42 @@ class LiveCamera : AppCompatActivity() {
             Log.d(TAG, "graphicOverlay is null");
         }
 
+        binding.currentWordTextView.text = "Word to Search"
+
 
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)
             startCameraSource()
         } else {
             getRuntimePermissions()
+        }
+
+        mediaPlayer = MediaPlayer.create(this@LiveCamera, R.raw.success_sound)
+
+        // Communicate with the UI thread
+        mHandler = object : Handler(Looper.getMainLooper()) {
+            override fun handleMessage(msg: Message) {
+                super.handleMessage(msg)
+                val feedbackCurrentWord: String? =
+                    msg.getData().getString(ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY)
+                if (feedbackCurrentWord != null && feedbackCurrentWord != lastFeedbackCurrentWord) {
+                    lastFeedbackCurrentWord = feedbackCurrentWord
+                    binding.currentWordTextView.text = feedbackCurrentWord
+                }
+                val feedbackToast: String? = msg.getData().getString(ACTION_TOAST_KEY)
+                if (feedbackToast != null) {
+                    lastFeedbackToast = feedbackToast
+                    Toast.makeText(this@LiveCamera, feedbackToast, Toast.LENGTH_SHORT).show()
+                    //PlLay a success sound
+                    mediaPlayer.start()
+
+                    //stop for a while, in case that we need to stop for a while because some objects are detected in the same frame!
+//                    preview!!.stop()
+//                    Handler().postDelayed({
+//                        startCameraSource()
+//                    }, 3000)
+                }
+            }
         }
     }
 

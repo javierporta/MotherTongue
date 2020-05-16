@@ -3,13 +3,15 @@ package com.ipleiria.mothertongue.object_detection
 import VisionProcessorBase
 import android.content.Context
 import android.graphics.Bitmap
-import android.media.MediaPlayer
+import android.os.Bundle
+import android.os.Message
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
+import com.ipleiria.mothertongue.LiveCamera
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.translations.TranslatorService
@@ -30,10 +32,9 @@ class ImageLabelingProcessor(
     VisionProcessorBase<List<FirebaseVisionImageLabel>>() {
 
     var hasFoundObject = false
-    val CONGRATING_USER_TIME = 5000L //MS
-    val mediaPlayer: MediaPlayer = MediaPlayer.create(this.liveCameraContext, R.raw.success_sound)
 
-    lateinit var currentObjectToSearch: GamePhrase
+
+    var currentObjectToSearch: GamePhrase? = null
 
     private val detector: FirebaseVisionImageLabeler =
         FirebaseVision.getInstance().onDeviceImageLabeler
@@ -48,7 +49,9 @@ class ImageLabelingProcessor(
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionImageLabel>> {
         //get first object to search
-        getNextPhrase()
+        if (currentObjectToSearch == null) {
+            getNextPhrase()
+        }
 
         return detector.processImage(image)
     }
@@ -95,40 +98,45 @@ class ImageLabelingProcessor(
         it: Task<String>,
         graphicOverlay: GraphicOverlay
     ) {
+        hasFoundObject = false
 
         translatedLabels.add(it.result!!)
         for (translatedLabel in translatedLabels) {
             if (translatedLabel.toLowerCase()
-                    .contains(currentObjectToSearch.phrase!!.toLowerCase())
+                    .contains(currentObjectToSearch?.phrase!!.toLowerCase())
             ) {
                 hasFoundObject = true
                 break
             }
         }
-        var labelGraphic: LabelGraphic
+        var labelGraphic = LabelGraphic(graphicOverlay, translatedLabels)
         if (!hasFoundObject) {
-            labelGraphic =
-                LabelGraphic(graphicOverlay, translatedLabels, currentObjectToSearch.phrase!!)
+            CommunicateWithUIThread(
+                LiveCamera.ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY,
+                currentObjectToSearch?.phrase!!
+            )
         } else {
             //Object found by the user
             //ToDo: Prise the user with different phrase, save points somewhere
-            labelGraphic = LabelGraphic(graphicOverlay, emptyList(), "Congrats! you found it!!")
-
+            //labelGraphic = LabelGraphic(graphicOverlay, emptyList())
+            CommunicateWithUIThread(LiveCamera.ACTION_TOAST_KEY, "Nice work!")
             this.markCurrentPhraseAsGuessed();
-
-            //Play a sound
-            //Todo: bug: There are frames that are still coming, so sound might be reproduced more than one time
-            if (hasFoundObject)
-                mediaPlayer.start()
-
-            Timer("SettingUp", false).schedule(CONGRATING_USER_TIME) {
-                hasFoundObject = false
-            }
-
+            CommunicateWithUIThread(
+                LiveCamera.ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY,
+                currentObjectToSearch?.phrase!!
+            )
         }
         graphicOverlay.add(labelGraphic)
         graphicOverlay.postInvalidate()
 
+    }
+
+    private fun CommunicateWithUIThread(actionName: String, value: String) {
+        val message: Message = LiveCamera.mHandler.obtainMessage()
+        val bundle = Bundle()
+        bundle.putString(actionName, value)
+        message.data = bundle
+        LiveCamera.mHandler.sendMessage(message)
     }
 
     override fun onFailure(e: Exception) {
@@ -150,7 +158,7 @@ class ImageLabelingProcessor(
 
     fun markCurrentPhraseAsGuessed() {
         //ToDo write in a persistant store
-        this.currentObjectToSearch.wasGuessed = true
+        this.currentObjectToSearch?.wasGuessed = true
         getNextPhrase()
     }
 
