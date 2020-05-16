@@ -32,6 +32,7 @@ class LiveCamera : AppCompatActivity() {
         val ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY: String =
             "ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW"
         val ACTION_TOAST_KEY: String = "ACTION_TOAST"
+        val ACTION_LEVEL_DONE: String = "LEVEL_DONE"
     }
 
     private var cameraSource: CameraSource? = null
@@ -51,10 +52,13 @@ class LiveCamera : AppCompatActivity() {
 
     private var lastFeedbackCurrentWord: String? = null
     private var lastFeedbackToast: String? = null
+    private var feedbackLevelDone: String? = null
+
 
     private lateinit var mediaPlayer: MediaPlayer
 
     val TIME_TO_STOP_AFTER_FIND = 3000L //MS
+    val TIME_TO_STOP_AFTER_GUESS_ALL_WORDS = 5000L //MS
 
     //endregion
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,15 +99,17 @@ class LiveCamera : AppCompatActivity() {
                 super.handleMessage(msg)
                 val feedbackCurrentWord: String? =
                     msg.getData().getString(ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY)
+                val feedbackToast: String? = msg.getData().getString(ACTION_TOAST_KEY)
+                val feedbackLevelDone: String? = msg.getData().getString(ACTION_LEVEL_DONE)
+                //ToDo: convert to a switch
                 if (feedbackCurrentWord != null && feedbackCurrentWord != lastFeedbackCurrentWord) {
                     lastFeedbackCurrentWord = feedbackCurrentWord
                     binding.currentWordTextView.text = feedbackCurrentWord
                 }
-                val feedbackToast: String? = msg.getData().getString(ACTION_TOAST_KEY)
                 if (feedbackToast != null) {
                     lastFeedbackToast = feedbackToast
                     Toast.makeText(this@LiveCamera, feedbackToast, Toast.LENGTH_SHORT).show()
-                    //PlLay a success sound
+                    //Play a success sound
                     mediaPlayer.start()
 
                     //stop for a while, in case that we need to stop for a while because some objects are detected in the same frame!
@@ -111,6 +117,22 @@ class LiveCamera : AppCompatActivity() {
 //                    Handler().postDelayed({
 //                        startCameraSource()
 //                    }, 3000)
+                }
+                if (feedbackLevelDone != null) {
+                    //Stop processing to show level results!
+                    preview!!.stop()
+
+                    Toast.makeText(
+                        this@LiveCamera,
+                        "Done!!! Going back to main activiy",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    //ToDo: Hide camera preview, show words learnt!
+
+                    Handler().postDelayed({
+                        finish()
+                    }, TIME_TO_STOP_AFTER_GUESS_ALL_WORDS)
                 }
             }
         }

@@ -12,15 +12,12 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
 import com.ipleiria.mothertongue.LiveCamera
-import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.translations.TranslatorService
 import com.ipleiria.mothertongue.utils.CameraImageGraphic
 import com.ipleiria.mothertongue.utils.FrameMetadata
 import com.ipleiria.mothertongue.utils.GraphicOverlay
 import java.io.IOException
-import java.util.*
-import kotlin.concurrent.schedule
 
 
 /** Custom Image Classifier Demo.  */
@@ -111,7 +108,7 @@ class ImageLabelingProcessor(
         }
         var labelGraphic = LabelGraphic(graphicOverlay, translatedLabels)
         if (!hasFoundObject) {
-            CommunicateWithUIThread(
+            communicateWithUIThread(
                 LiveCamera.ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY,
                 currentObjectToSearch?.phrase!!
             )
@@ -119,9 +116,9 @@ class ImageLabelingProcessor(
             //Object found by the user
             //ToDo: Prise the user with different phrase, save points somewhere
             //labelGraphic = LabelGraphic(graphicOverlay, emptyList())
-            CommunicateWithUIThread(LiveCamera.ACTION_TOAST_KEY, "Nice work!")
+            communicateWithUIThread(LiveCamera.ACTION_TOAST_KEY, "Nice work!")
             this.markCurrentPhraseAsGuessed();
-            CommunicateWithUIThread(
+            communicateWithUIThread(
                 LiveCamera.ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY,
                 currentObjectToSearch?.phrase!!
             )
@@ -131,7 +128,7 @@ class ImageLabelingProcessor(
 
     }
 
-    private fun CommunicateWithUIThread(actionName: String, value: String) {
+    private fun communicateWithUIThread(actionName: String, value: String) {
         val message: Message = LiveCamera.mHandler.obtainMessage()
         val bundle = Bundle()
         bundle.putString(actionName, value)
@@ -146,12 +143,16 @@ class ImageLabelingProcessor(
     fun getNextPhrase() {
         try {
 
+            if (objectsToSearch.last().wasGuessed) {
+                //Level is done, show results and go bak to main activity
+                communicateWithUIThread(LiveCamera.ACTION_LEVEL_DONE, "Done")
+                return
+            }
+
             //Get the first phrase that was not guessed
             this.currentObjectToSearch = objectsToSearch.first { !it.wasGuessed }
 
         } catch (ex: java.lang.Exception) {
-            //User guessed all phrases
-            // ToDo: go back to activity
             print("Go back!")
         }
     }
