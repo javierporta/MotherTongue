@@ -70,7 +70,6 @@ class LiveCamera : AppCompatActivity() {
         gamePhrases = extras?.getParcelableArrayList<GamePhrase>("gamePhrases")
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_live_camera)
-        //FirebaseApp.initializeApp(this);
 
         preview = binding.cameraSourcePreview;
         if (preview == null) {
@@ -82,6 +81,8 @@ class LiveCamera : AppCompatActivity() {
         }
 
         binding.currentWordTextView.text = "Word to Search"
+
+        initializeProgressBar()
 
 
         if (allPermissionsGranted()) {
@@ -112,6 +113,9 @@ class LiveCamera : AppCompatActivity() {
                     //Play a success sound
                     mediaPlayer.start()
 
+                    moveProgressBar()
+
+
                     //stop for a while, in case that we need to stop for a while because some objects are detected in the same frame!
 //                    preview!!.stop()
 //                    Handler().postDelayed({
@@ -128,6 +132,8 @@ class LiveCamera : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
 
+                    //ToDO: Play TaDa sound
+
                     //ToDo: Hide camera preview, show words learnt!
 
                     Handler().postDelayed({
@@ -136,6 +142,15 @@ class LiveCamera : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun initializeProgressBar() {
+        binding.levelProgressBar.max = gamePhrases?.size!!
+        binding.levelProgressBar.progress = 0
+    }
+
+    private fun moveProgressBar() {
+        binding.levelProgressBar.progress++
     }
 
     override fun onResume() {

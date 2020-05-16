@@ -123,10 +123,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         //Todo: Pass list depending on context. Now using #HOME category#
         //Translate phrases
+        //WARNING: Similiar things should not be together in this list
         var englishGamePhrases = arrayListOf(
-            GamePhrase(phrase = "Sunglasses", wasGuessed = false),
             GamePhrase(phrase = "Computer", wasGuessed = false),
-            GamePhrase(phrase = "Chair", wasGuessed = false)
+            GamePhrase(phrase = "Sunglasses", wasGuessed = false),
+            GamePhrase(phrase = "Television", wasGuessed = false)
         )
 
         if (firebaseSelectedLanguageEnum != FirebaseTranslateLanguage.EN) { //Only for languages to be translated (not english)
