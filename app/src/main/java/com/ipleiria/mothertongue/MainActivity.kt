@@ -10,11 +10,12 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
+import com.ipleiria.mothertongue.models.GameLevel
 import com.ipleiria.mothertongue.models.GamePhrase
+import com.ipleiria.mothertongue.models.GameStatus
 import com.ipleiria.mothertongue.models.MainModel
 import com.ipleiria.mothertongue.services.ContextService
 import com.ipleiria.mothertongue.translations.TranslatorService
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
@@ -123,12 +124,21 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         //Todo: Pass list depending on context. Now using #HOME category#
         //Translate phrases
-        //WARNING: Similiar things should not be together in this list
+        //WARNING: Similar things should not be together in this list
         var englishGamePhrases = arrayListOf(
-            GamePhrase(phrase = "Computer", wasGuessed = false),
-            GamePhrase(phrase = "Sunglasses", wasGuessed = false),
+            GamePhrase(phrase = "Computer", wasGuessed = true),
+            GamePhrase(phrase = "Sunglasses", wasGuessed = true),
             GamePhrase(phrase = "Television", wasGuessed = false)
         )
+
+        var gameLevel = GameLevel(firebaseSelectedLanguageEnum, englishGamePhrases)
+
+        //ToDo: Get from persistence
+        var game = GameStatus("", 0, arrayListOf())
+        game.gameLevels.add(gameLevel)
+
+        var score = game.calculateScore()
+
 
         if (firebaseSelectedLanguageEnum != FirebaseTranslateLanguage.EN) { //Only for languages to be translated (not english)
             translateGamePhrases(englishGamePhrases)
@@ -149,7 +159,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private fun translateGamePhrases(gamePhrases: ArrayList<GamePhrase>) {
         startLoading()
-
 
         val translatorService = TranslatorService(firebaseSelectedLanguageEnum)
         var isLastPhrase = false

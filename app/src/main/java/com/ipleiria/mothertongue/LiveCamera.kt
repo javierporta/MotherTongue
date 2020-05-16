@@ -121,7 +121,6 @@ class LiveCamera : AppCompatActivity() {
 
                     moveProgressBar()
 
-
                     //stop for a while, in case that we need to stop for a while because some objects are detected in the same frame!
 //                    preview!!.stop()
 //                    Handler().postDelayed({
@@ -152,7 +151,7 @@ class LiveCamera : AppCompatActivity() {
 
     private fun initializeProgressBar() {
         binding.levelProgressBar.max = gamePhrases?.size!!
-        binding.levelProgressBar.progress = 0
+        binding.levelProgressBar.progress = gamePhrases?.count { it.wasGuessed }!!
     }
 
     private fun moveProgressBar() {
