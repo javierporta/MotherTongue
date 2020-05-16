@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
+import com.ipleiria.mothertongue.constants.Phrases
 import com.ipleiria.mothertongue.databinding.ActivityLiveCameraBinding
 import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.object_detection.ImageLabelingProcessor
@@ -109,7 +110,12 @@ class LiveCamera : AppCompatActivity() {
                 }
                 if (feedbackToast != null) {
                     lastFeedbackToast = feedbackToast
-                    Toast.makeText(this@LiveCamera, feedbackToast, Toast.LENGTH_SHORT).show()
+
+                    //Pick a random phrase to congrats the user!
+                    val praisePhrase =
+                        Phrases.PRAISE_USER.random() // I love kotlin for this kinda things!! S2
+
+                    Toast.makeText(this@LiveCamera, praisePhrase, Toast.LENGTH_SHORT).show()
                     //Play a success sound
                     mediaPlayer.start()
 
