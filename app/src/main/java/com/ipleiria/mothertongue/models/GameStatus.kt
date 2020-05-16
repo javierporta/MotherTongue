@@ -2,10 +2,10 @@ package com.ipleiria.mothertongue.models
 
 data class GameStatus(
     var username: String,
-    var totalScore: Int,
     var gameLevels: ArrayList<GameLevel>
 ) {
-    fun calculateScore(): Int {
+
+    fun getScore(): Int {
         var score = 0
         if (gameLevels == null || gameLevels?.size == 0) {
             return score
