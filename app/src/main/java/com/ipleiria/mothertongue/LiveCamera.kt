@@ -134,7 +134,7 @@ class LiveCamera : AppCompatActivity() {
 
                     Toast.makeText(
                         this@LiveCamera,
-                        "Done!!! Going back to main activity",
+                        "Done!!! Going back to main activity in $TIME_TO_STOP_AFTER_GUESS_ALL_WORDS ms",
                         Toast.LENGTH_LONG
                     ).show()
 
