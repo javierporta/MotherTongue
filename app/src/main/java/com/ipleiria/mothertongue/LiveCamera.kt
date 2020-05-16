@@ -124,7 +124,7 @@ class LiveCamera : AppCompatActivity() {
 
                     Toast.makeText(
                         this@LiveCamera,
-                        "Done!!! Going back to main activiy",
+                        "Done!!! Going back to main activity",
                         Toast.LENGTH_LONG
                     ).show()
 
