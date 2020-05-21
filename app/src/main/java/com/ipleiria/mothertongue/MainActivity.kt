@@ -145,17 +145,24 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         startLoading()
 
         val translatorService = TranslatorService(firebaseSelectedLanguageEnum)
+        var translatedPhrases =
+            arrayListOf<GamePhrase>() //Create a copy of game phrases but it will have the translated phrases
         var isLastPhrase = false
         for (gamePhrase in gamePhrases.withIndex()) {
             translatorService.translate(gamePhrase.value.phrase!!)
                 .addOnSuccessListener { translationResult: String? ->
                     if (translationResult != null) {
-                        gamePhrase.value.phrase = translationResult!!
+                        translatedPhrases.add(
+                            GamePhrase(
+                                phrase = translationResult!!,
+                                wasGuessed = gamePhrase.value.wasGuessed
+                            )
+                        )
                     }
                     if (gamePhrase.index == gamePhrases.count() - 1) {
                         isLastPhrase = true
                     }
-                }.continueWith { if (isLastPhrase) goToLiveCamera(gamePhrases) }
+                }.continueWith { if (isLastPhrase) goToLiveCamera(translatedPhrases) }
         }
     }
 
