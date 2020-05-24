@@ -30,6 +30,7 @@ class ContextService {
     val thresholdPlaces = 0.60
     val thresholdNearbyPlaces = 0.30
     val unsupportedPlace ="UNSUPPOTED_PLACE"
+    
     var possibleStreetActions= arrayOf("ON_BICYCLE", "ON_FOOT", "RUNNING",  "WALKING")
 
     /**
