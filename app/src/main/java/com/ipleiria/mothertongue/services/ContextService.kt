@@ -1,25 +1,17 @@
 package com.ipleiria.mothertongue.services
 
 import android.app.Activity
-import android.os.StrictMode
 import android.util.Log
 import android.widget.Toast
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.DetectedActivity
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.libraries.places.api.model.Place
 import com.google.maps.GeoApiContext
-import com.google.maps.RoadsApi
 import com.ipleiria.mothertongue.MainActivity
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
 import com.ipleiria.mothertongue.google_awareness.SnapshotApiClient
 import com.ipleiria.mothertongue.google_palces.PlacesApiClient
-import org.json.JSONObject
 
 
 class ContextService {
@@ -52,7 +44,7 @@ class ContextService {
     fun detectNearbyPlaces(activity: Activity){
         val apiKey: String = activity.applicationContext.getString(R.string.GOOGLE_PLACE_API_KEY)
 
-         PlacesApiClient.instance.getNearbyPlaces(activity,apiKey)
+         PlacesApiClient.instance.getNearbyPlacesAsync(activity,apiKey)
         .addOnSuccessListener { response ->
 
             var  placeLikelihoods = response.placeLikelihoods
@@ -82,7 +74,7 @@ class ContextService {
 
 
         activity.startLoading();
-        PlacesApiClient.instance.getNearbyPlaces(activity,apiKey)
+        PlacesApiClient.instance.getNearbyPlacesAsync(activity,apiKey)
             .addOnSuccessListener { response ->
 
                 var  placeLikelihoods = response.placeLikelihoods
