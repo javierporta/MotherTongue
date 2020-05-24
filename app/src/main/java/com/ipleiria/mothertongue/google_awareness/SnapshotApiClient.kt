@@ -54,6 +54,9 @@ class SnapshotApiClient private constructor() {
         return location
     }
 
+    /**
+     *
+     */
     fun getLocationAsync(activity: Activity): Task<LocationResponse> {
         LocationPermission.checkFine(activity)
         return Awareness.getSnapshotClient(activity).location
@@ -79,10 +82,16 @@ class SnapshotApiClient private constructor() {
         return  headphoneState
     }
 
+    /**
+     *
+     */
     fun getHeadphoneStateAsync(activity: Activity): Task<HeadphoneStateResponse> {
         return  Awareness.getSnapshotClient(activity).headphoneState
     }
 
+    /**
+     *
+     */
     fun detectedActivity(activity: Activity): ActivityRecognitionResult? {
         var activityRecognition: ActivityRecognitionResult?= null
         Awareness.getSnapshotClient(activity).detectedActivity
@@ -101,8 +110,10 @@ class SnapshotApiClient private constructor() {
         return activityRecognition
     }
 
+    /**
+     *
+     */
     fun detectedActivityAsync(activity: Activity): Task<DetectedActivityResponse> {
-
         return Awareness.getSnapshotClient(activity).detectedActivity
     }
 
