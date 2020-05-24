@@ -23,6 +23,15 @@ import org.json.JSONObject
 
 
 class ContextService {
+
+    val interestPlaces = arrayOf("CAFE", "PARK", "SHOPPING")
+    val defaultPlaces = arrayOf("HOUSE", "BUILDING", "STREET")
+    var allPossibleActions= arrayOf("IN_VEHICLE", "ON_BICYCLE", "ON_FOOT", "STILL", "UNKNOWN", "TILTING", "UNKNOWN", "WALKING", "RUNNING")
+    val thresholdPlaces = 0.60
+    val thresholdNearbyPlaces = 0.30
+    val unsupportedPlace ="UNSUPPOTED_PLACE"
+    var possibleStreetActions= arrayOf("ON_BICYCLE", "ON_FOOT", "RUNNING",  "WALKING")
+
     /**
      *
      */
@@ -124,13 +133,7 @@ class ContextService {
     }
 
     private fun detectPlaceProcess(placeLikelihood: Double, placeTypes: List<Place.Type>?, latitude: Double, longitude: Double,probableActivity: DetectedActivity): String{
-        val interestPlaces = arrayOf("CAFE", "PARK", "SHOPPING")
-        val defaultPlaces = arrayOf("HOUSE", "BUILDING", "STREET")
-        var allPossibleActions= arrayOf("IN_VEHICLE", "ON_BICYCLE", "ON_FOOT", "STILL", "UNKNOWN", "TILTING", "UNKNOWN", "WALKING", "RUNNING")
-        val thresholdPlaces = 0.60
-        val thresholdNearbyPlaces = 0.30
-        val unsupportedPlace ="UNSUPPOTED_PLACE"
-        var possibleStreetActions= arrayOf("ON_BICYCLE", "ON_FOOT", "RUNNING",  "WALKING")
+
 
         val place = placeTypes?.filter {it ->
             interestPlaces.contains(it.name)
