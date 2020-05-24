@@ -8,6 +8,7 @@ import com.google.android.gms.awareness.fence.AwarenessFence
 import com.google.android.gms.awareness.fence.FenceQueryRequest
 import com.google.android.gms.awareness.fence.FenceStateMap
 import com.google.android.gms.awareness.fence.FenceUpdateRequest
+import com.google.android.gms.tasks.Task
 import com.ipleiria.mothertongue.utils.IFenceReceiver
 import java.sql.Timestamp
 
@@ -48,6 +49,14 @@ class FenceApiClient(pendingIntent: PendingIntent?, fenceReceiver: IFenceReceive
                     "could not be registered: " + e.message
             Log.e("TAG_FENCE", text)
         }
+    }
+
+    fun addFenceSync(activity: Activity, fenceKey: String, fence: AwarenessFence): Task<Void> {
+       return  Awareness.getFenceClient(activity).updateFences(
+           FenceUpdateRequest.Builder()
+               .addFence(fenceKey, fence, _pendingIntent)
+               .build()
+       )
     }
 
     /**
