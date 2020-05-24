@@ -28,8 +28,10 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
-    private val mainModel: MainModel = MainModel("", "Park")
+    private val mainModel: MainModel = MainModel("", "Park","")
     private var firebaseSelectedLanguageEnum: Int = 0
+
+    public  var nearbyPlaces ="";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +44,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         //bind mainModel
         binding.mainModel = mainModel
 
-        ContextService.instance.detectPlace(this);
-
         Game.initializeGame()
         getGameData()
 
@@ -55,8 +55,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         stopLoading()
 
-        //Update Score
+
+        ContextService.instance.detectPlace(this, binding);
+        
         binding.scoreTextView.text = Game.gameStatus.getScore().toString()
+
     }
 
     private fun initializeLanguageSpinner() {
@@ -216,14 +219,14 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private fun startLoading() {
+    public fun startLoading() {
         binding.pBar.visibility = View.VISIBLE
         binding.playButton.isClickable = false
         binding.playButton.isEnabled = false
 
     }
 
-    private fun stopLoading() {
+    public fun stopLoading() {
         binding.playButton.isClickable = true
         binding.playButton.isEnabled = true
         binding.pBar.visibility = View.GONE

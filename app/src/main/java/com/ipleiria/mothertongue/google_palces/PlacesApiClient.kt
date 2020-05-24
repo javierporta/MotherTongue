@@ -30,7 +30,7 @@ class PlacesApiClient {
         val instance: PlacesApiClient by lazy { HOLDER.INSTANCE }
     }
 
-    fun getNearbyPlaces(activity: Activity, apiKey: String): Task<FindCurrentPlaceResponse> {
+    fun getNearbyPlacesAsync(activity: Activity, apiKey: String): Task<FindCurrentPlaceResponse> {
         LocationPermission.checkFine(activity)
         // Initialize Places.
         Places.initialize(activity.applicationContext, apiKey)
@@ -47,7 +47,7 @@ class PlacesApiClient {
         return placesClient.findCurrentPlace(request)
     }
 
-    fun getCurrentPlace(activity: Activity, apiKey: String): Task<FindCurrentPlaceResponse> {
+    fun getCurrentPlaceAsync(activity: Activity, apiKey: String): Task<FindCurrentPlaceResponse> {
         LocationPermission.checkFine(activity)
         // Initialize Places.
         Places.initialize(activity.applicationContext, apiKey)
