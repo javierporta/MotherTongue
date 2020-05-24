@@ -25,7 +25,7 @@ import org.json.JSONObject
 class ContextService {
 
     private val interestPlaces = arrayOf("CAFE", "PARK", "SHOPPING")
-    val defaultPlaces = arrayOf("HOUSE", "BUILDING", "STREET")
+    private val defaultPlaces = arrayOf("HOUSE", "BUILDING", "STREET")
     var allPossibleActions= arrayOf("IN_VEHICLE", "ON_BICYCLE", "ON_FOOT", "STILL", "UNKNOWN", "TILTING", "UNKNOWN", "WALKING", "RUNNING")
     val thresholdPlaces = 0.60
     val thresholdNearbyPlaces = 0.30
