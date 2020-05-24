@@ -20,7 +20,9 @@ import com.ipleiria.mothertongue.models.MainModel
 import com.ipleiria.mothertongue.services.ContextService
 import com.ipleiria.mothertongue.translations.TranslatorService
 import java.io.*
+import java.util.*
 import javax.inject.Singleton
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -132,18 +134,40 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         //Todo: Pass list depending on context. Now using #HOME category#
         //Translate phrases
+
+
         //WARNING: Similar things should not be together in this list
-        var currentGamePhrases = Game.gameStatus.gameLevels.first().gamePhrases
+        //ToDo: get the one depending on context
+        var currentGamePhrases = arrayListOf<GamePhrase>()
+        Game.gameStatus.gameLevels.first().gamePhrases.forEach {
+            currentGamePhrases.add(it)
+        }
+
+        var newPhrases = arrayListOf<GamePhrase>()
+        currentGamePhrases.forEach {
+            newPhrases.add(GamePhrase(it.phrase!!, false))
+        }
+
+        //Try to create a new game level
+        var newGameLevel = GameLevel(
+            "Home-" + firebaseSelectedLanguageEnum, //ToDo: Replace HOme by place/category
+            firebaseSelectedLanguageEnum,
+            newPhrases,
+            false
+        )
+
+
         //Update current game to be played
-        Game.gameStatus.currentGameLevelIndex = 0
+        Game.gameStatus.currentGameLevelIndex =
+            Game.addGameLevel(newGameLevel) //return new index or current indez
 
         var currentLevel = Game.gameStatus.gameLevels[Game.gameStatus.currentGameLevelIndex]
         if (currentLevel.isComplete) {
-            showYesNoDialogReset(currentLevel, currentGamePhrases)
+            showYesNoDialogReset(currentLevel, currentLevel.gamePhrases)
             return
         }
 
-        firePlayButton(currentGamePhrases)
+        firePlayButton(currentLevel.gamePhrases)
     }
 
     private fun firePlayButton(currentGamePhrases: ArrayList<GamePhrase>) {
@@ -181,6 +205,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                                 wasGuessed = gamePhrase.value.wasGuessed
                             )
                         )
+                        //update singleton
+                        Game.gameStatus.gameLevels[Game.gameStatus.currentGameLevelIndex].gamePhrases[gamePhrase.index].phrase =
+                            translationResult!!
                     }
                     if (gamePhrase.index == gamePhrases.count() - 1) {
                         isLastPhrase = true

@@ -16,11 +16,6 @@ class Game {
                 GamePhrase(phrase = "Sunglasses", wasGuessed = false),
                 GamePhrase(phrase = "Television", wasGuessed = false)
             )
-            var englishGamePhrases2 = arrayListOf(
-                GamePhrase(phrase = "Computer", wasGuessed = true),
-                GamePhrase(phrase = "Sunglasses", wasGuessed = true),
-                GamePhrase(phrase = "Television", wasGuessed = false)
-            )
 
             var gameLevel = GameLevel(
                 "Home-" + FirebaseTranslateLanguage.EN,
@@ -28,29 +23,24 @@ class Game {
                 englishGamePhrases,
                 false
             )
-            var gameLevel2 = GameLevel(
-                "Home1-" + FirebaseTranslateLanguage.EN,
-                FirebaseTranslateLanguage.EN,
-                englishGamePhrases2,
-                false
-            )
 
             //ToDo: Get from persistence
             gameStatus = GameStatus("", arrayListOf())
             gameStatus.gameLevels.add(gameLevel)
-            gameStatus.gameLevels.add(gameLevel2)
         }
 
-        fun addGameLevel(gameLevel: GameLevel) {
+        fun addGameLevel(gameLevel: GameLevel): Int {
             //check if GameLevel already exists
-            var gameLevel = gameStatus.gameLevels.find { x -> x.id == gameLevel.id }
+            var gameLevelSearched = gameStatus.gameLevels.find { x -> x.id == gameLevel.id }
 
-            if (gameLevel == null) {
-                //gameLevel already exists
-                return
-            } else {
+            if (gameLevelSearched == null) {
                 // add new game level
                 gameStatus.gameLevels.add(gameLevel)
+                return gameStatus.gameLevels.lastIndex
+
+            } else {
+                //gameLevel already exists
+                return gameStatus.gameLevels.indexOf(gameLevelSearched)
             }
         }
 
