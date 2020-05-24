@@ -80,6 +80,14 @@ class FenceApiClient(pendingIntent: PendingIntent?, fenceReceiver: IFenceReceive
             }
     }
 
+    fun removeFencesAsync(activity: Activity) : Task<Void> {
+        return Awareness.getFenceClient(activity).updateFences(
+            FenceUpdateRequest.Builder()
+                .removeFence(_pendingIntent)
+                .build()
+        )
+    }
+
     /**
      *
      */
