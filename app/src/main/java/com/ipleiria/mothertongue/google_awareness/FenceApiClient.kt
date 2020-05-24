@@ -12,7 +12,6 @@ import java.sql.Timestamp
 class FenceApiClient(pendingIntent: PendingIntent?, fenceReceiver: IFenceReceiver?) {
 
     private var _pendingIntent: PendingIntent? = pendingIntent
-    private var _fenceReceiver: IFenceReceiver? = fenceReceiver
 
     /**
      *
