@@ -1,12 +1,14 @@
 package com.ipleiria.mothertongue.services
 
 import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.location.DetectedActivity
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.libraries.places.api.model.Place
 import com.google.maps.GeoApiContext
+import com.ipleiria.mothertongue.Location
 import com.ipleiria.mothertongue.MainActivity
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
@@ -114,6 +116,15 @@ class ContextService {
 
                         val detectPlace = detectPlaceProcess(nearbyPlace.likelihood, nearbyPlace.place.types, locationResponse.location.latitude, locationResponse.location.longitude, probableActivity)
                         binding.detectedPlaceNametextView.text = detectPlace
+
+                        activity.stopLoading()
+                        if(detectPlace == unsupportedPlace){
+                            val intent = Intent(activity, Location::class.java)
+                            // To pass any data to next activity
+                            intent.putExtra("detectPlace", unsupportedPlace)
+                            // start your next activity
+                            activity.startActivityForResult(intent,1)
+                        }
                     }
                 }
             }.addOnFailureListener(OnFailureListener { e ->

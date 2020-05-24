@@ -1,5 +1,6 @@
 package com.ipleiria.mothertongue
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -20,9 +21,6 @@ import com.ipleiria.mothertongue.models.MainModel
 import com.ipleiria.mothertongue.services.ContextService
 import com.ipleiria.mothertongue.translations.TranslatorService
 import java.io.*
-import java.util.*
-import javax.inject.Singleton
-import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -337,6 +335,15 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     // Extension function to show toast message
     fun Context.toast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onActivityResult(requestCode:Int, resultCode:Int, data:Intent?) {
+        if ( requestCode == 1  && resultCode == RESULT_OK) {
+            val selectdPlace: String? = data?.getStringExtra("SELECTED_PLACE")
+            binding.detectedPlaceNametextView.text = selectdPlace
+            stopLoading()
+        }
+        super.onActivityResult(requestCode, Activity.RESULT_CANCELED, data)
     }
 }
 
