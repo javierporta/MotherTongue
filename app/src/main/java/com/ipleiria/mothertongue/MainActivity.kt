@@ -1,20 +1,23 @@
 package com.ipleiria.mothertongue
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
 import com.ipleiria.mothertongue.models.GamePhrase
+import com.ipleiria.mothertongue.models.GameStatus
 import com.ipleiria.mothertongue.models.MainModel
 import com.ipleiria.mothertongue.services.ContextService
 import com.ipleiria.mothertongue.translations.TranslatorService
-import kotlin.collections.ArrayList
+import java.io.*
+import javax.inject.Singleton
 
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -37,6 +40,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         ContextService.instance.detectPlace(this);
 
         Game.initializeGame()
+        getGameData()
+
         binding.scoreTextView.text = Game.gameStatus.getScore().toString()
     }
 
@@ -44,6 +49,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         super.onStart()
 
         stopLoading()
+
+        //Update Score
+        binding.scoreTextView.text = Game.gameStatus.getScore().toString()
     }
 
     private fun initializeLanguageSpinner() {
@@ -123,6 +131,22 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         //Translate phrases
         //WARNING: Similar things should not be together in this list
         var currentGamePhrases = Game.gameStatus.gameLevels.first().gamePhrases
+        //Update current game to be played
+        Game.gameStatus.currentGameLevelIndex = 0
+
+        var currentLevel = Game.gameStatus.gameLevels[Game.gameStatus.currentGameLevelIndex]
+        if (currentLevel.isComplete) {
+            Toast.makeText(
+                this@MainActivity,
+                "Level has already complete! Reset game to play again",
+                Toast.LENGTH_LONG
+            ).show()
+
+            Game.resetGameLevel(currentLevel)
+        }
+
+
+
 
         if (firebaseSelectedLanguageEnum != FirebaseTranslateLanguage.EN) { //Only for languages to be translated (not english)
             translateGamePhrases(currentGamePhrases)
@@ -177,6 +201,58 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding.playButton.isClickable = true
         binding.playButton.isEnabled = true
         binding.pBar.visibility = View.GONE
+    }
+
+    override fun onPause() {
+        super.onPause()
+        try {
+            val fileOutputStream: FileOutputStream =
+                openFileOutput("game.bin", Context.MODE_PRIVATE)
+            val objectOutputStream = ObjectOutputStream(fileOutputStream)
+            objectOutputStream.writeObject(Game.gameStatus)
+            objectOutputStream.close()
+            fileOutputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(
+                this@MainActivity,
+                "Could not write Game to internal storage.",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    fun getGameData() {
+        try {
+            val fileInputStream: FileInputStream = openFileInput("game.bin")
+            val objectInputStream = ObjectInputStream(fileInputStream)
+            Game.gameStatus = objectInputStream.readObject() as GameStatus
+
+            objectInputStream.close()
+            fileInputStream.close()
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+            Toast.makeText(
+                this@MainActivity,
+                "Could not read GameStatus from internal storage (no GameStatus yet?).",
+                Toast.LENGTH_LONG
+            ).show()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(
+                this@MainActivity,
+                "Error reading GameStatus from internal storage.",
+                Toast.LENGTH_LONG
+            ).show()
+        } catch (e: ClassNotFoundException) {
+            e.printStackTrace()
+            Toast.makeText(
+                this@MainActivity,
+                "Error reading GameStatus from internal storage.",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
     }
 
 

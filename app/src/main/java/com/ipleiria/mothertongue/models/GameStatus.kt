@@ -1,9 +1,12 @@
 package com.ipleiria.mothertongue.models
 
+import java.io.Serializable
+
 data class GameStatus(
     var username: String,
-    var gameLevels: ArrayList<GameLevel>
-) {
+    var gameLevels: ArrayList<GameLevel>,
+    var currentGameLevelIndex: Int = -1
+) : Serializable {
 
     fun getScore(): Int {
         var score = 0

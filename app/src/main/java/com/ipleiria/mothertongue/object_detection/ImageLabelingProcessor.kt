@@ -11,6 +11,7 @@ import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
+import com.ipleiria.mothertongue.Game
 import com.ipleiria.mothertongue.LiveCamera
 import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.translations.TranslatorService
@@ -158,8 +159,19 @@ class ImageLabelingProcessor(
     }
 
     fun markCurrentPhraseAsGuessed() {
-        //ToDo write in a persistant store
+
+        //WARNING: This is not the best place to do that, since it is called many times
         this.currentObjectToSearch?.wasGuessed = true
+        var gamePhraseToUpdate =
+            Game.gameStatus.gameLevels[Game.gameStatus.currentGameLevelIndex].gamePhrases.find { x -> x.phrase == this.currentObjectToSearch?.phrase }
+        var gamePhraseIndexToUpdate =
+            Game.gameStatus.gameLevels[Game.gameStatus.currentGameLevelIndex].gamePhrases.indexOf(
+                gamePhraseToUpdate
+            )
+
+        Game.gameStatus.gameLevels[Game.gameStatus.currentGameLevelIndex].gamePhrases[gamePhraseIndexToUpdate].wasGuessed =
+            true;
+
         getNextPhrase()
     }
 
