@@ -5,8 +5,13 @@ import android.location.Location
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.awareness.Awareness
+import com.google.android.gms.awareness.SnapshotClient
+import com.google.android.gms.awareness.snapshot.DetectedActivityResponse
+import com.google.android.gms.awareness.snapshot.HeadphoneStateResponse
+import com.google.android.gms.awareness.snapshot.LocationResponse
 import com.google.android.gms.awareness.state.HeadphoneState
 import com.google.android.gms.location.ActivityRecognitionResult
+import com.google.android.gms.tasks.Task
 import com.ipleiria.mothertongue.utils.LocationPermission
 
 /**
@@ -49,6 +54,11 @@ class SnapshotApiClient private constructor() {
         return location
     }
 
+    fun getLocationAsync(activity: Activity): Task<LocationResponse> {
+        LocationPermission.checkFine(activity)
+        return Awareness.getSnapshotClient(activity).location
+    }
+
     /**
      *
      */
@@ -69,6 +79,10 @@ class SnapshotApiClient private constructor() {
         return  headphoneState
     }
 
+    fun getHeadphoneStateAsync(activity: Activity): Task<HeadphoneStateResponse> {
+        return  Awareness.getSnapshotClient(activity).headphoneState
+    }
+
     fun detectedActivity(activity: Activity): ActivityRecognitionResult? {
         var activityRecognition: ActivityRecognitionResult?= null
         Awareness.getSnapshotClient(activity).detectedActivity
@@ -85,6 +99,11 @@ class SnapshotApiClient private constructor() {
             }
 
         return activityRecognition
+    }
+
+    fun detectedActivityAsync(activity: Activity): Task<DetectedActivityResponse> {
+
+        return Awareness.getSnapshotClient(activity).detectedActivity
     }
 
 
