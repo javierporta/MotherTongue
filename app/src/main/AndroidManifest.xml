@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LiveCamera"></activity>
+        <activity android:name=".Location"></activity>
+        <activity android:name=".LiveCamera" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +30,7 @@
 
         <meta-data
             android:name="com.google.android.awareness.API_KEY"
-            android:value="@string/GOOGLE_PLACE_API_KEY"/>
+            android:value="@string/GOOGLE_PLACE_API_KEY" />
     </application>
 
 </manifest>

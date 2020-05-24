@@ -52,4 +52,11 @@
     <!-- Google Awareness API_KEY -->
     <string name="GOOGLE_PLACE_API_KEY">AIzaSyBgBdyuMPbS1SjoZVaD_yOOTfzxZVBiSEo</string>
     <string name="looking_for">Let\'s look for ---> </string>
+
+    <string-array name="places_array">
+        <item>Select...</item>
+        <item>HOUSE</item>
+        <item>BUILDING</item>
+        <item>STREET</item>
+    </string-array>
 </resources>
