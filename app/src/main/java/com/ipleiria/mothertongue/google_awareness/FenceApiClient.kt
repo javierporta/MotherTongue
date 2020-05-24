@@ -4,10 +4,7 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.util.Log
 import com.google.android.gms.awareness.Awareness
-import com.google.android.gms.awareness.fence.AwarenessFence
-import com.google.android.gms.awareness.fence.FenceQueryRequest
-import com.google.android.gms.awareness.fence.FenceStateMap
-import com.google.android.gms.awareness.fence.FenceUpdateRequest
+import com.google.android.gms.awareness.fence.*
 import com.google.android.gms.tasks.Task
 import com.ipleiria.mothertongue.utils.IFenceReceiver
 import java.sql.Timestamp
@@ -104,5 +101,9 @@ class FenceApiClient(pendingIntent: PendingIntent?, fenceReceiver: IFenceReceive
             }
 
         return  fenceStateMap
+    }
+
+    fun queryFencesAsyc(activity: Activity):  Task<FenceQueryResponse> {
+        return   Awareness.getFenceClient(activity).queryFences(FenceQueryRequest.all())
     }
 }
