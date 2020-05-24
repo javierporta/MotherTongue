@@ -1,6 +1,8 @@
 package com.ipleiria.mothertongue
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -11,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
+import com.ipleiria.mothertongue.models.GameLevel
 import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.models.GameStatus
 import com.ipleiria.mothertongue.models.MainModel
@@ -136,18 +139,14 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         var currentLevel = Game.gameStatus.gameLevels[Game.gameStatus.currentGameLevelIndex]
         if (currentLevel.isComplete) {
-            Toast.makeText(
-                this@MainActivity,
-                "Level has already complete! Reset game to play again",
-                Toast.LENGTH_LONG
-            ).show()
-
-            Game.resetGameLevel(currentLevel)
+            showYesNoDialogReset(currentLevel, currentGamePhrases)
+            return
         }
 
+        firePlayButton(currentGamePhrases)
+    }
 
-
-
+    private fun firePlayButton(currentGamePhrases: ArrayList<GamePhrase>) {
         if (firebaseSelectedLanguageEnum != FirebaseTranslateLanguage.EN) { //Only for languages to be translated (not english)
             translateGamePhrases(currentGamePhrases)
         } else {
@@ -255,5 +254,61 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     }
 
+    // Method to show an alert dialog with yes, no and cancel button
+    private fun showYesNoDialogReset(
+        currentLevel: GameLevel,
+        currentGamePhrases: ArrayList<GamePhrase>
+    ) {
+        // Late initialize an alert dialog object
+        lateinit var dialog: AlertDialog
 
+
+        // Initialize a new instance of alert dialog builder object
+        val builder = AlertDialog.Builder(this)
+
+        // Set a title for alert dialog
+        builder.setTitle("You already completed this level")
+
+        // Set a message for alert dialog
+        builder.setMessage("Would you to like to reset it and play again?")
+
+
+        // On click listener for dialog buttons
+        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    Game.resetGameLevel(currentLevel)
+                    toast("Reset game level")
+                    firePlayButton(currentGamePhrases)
+                }
+                //DialogInterface.BUTTON_NEGATIVE -> toast("Negative/No button clicked.")
+                //DialogInterface.BUTTON_NEUTRAL -> toast("Neutral/Cancel button clicked.")
+            }
+        }
+
+
+        // Set the alert dialog positive/yes button
+        builder.setPositiveButton("YES", dialogClickListener)
+
+        // Set the alert dialog negative/no button
+        builder.setNegativeButton("NO", dialogClickListener)
+
+        // Set the alert dialog neutral/cancel button
+        builder.setNeutralButton("CANCEL", dialogClickListener)
+
+
+        // Initialize the AlertDialog using builder object
+        dialog = builder.create()
+
+        // Finally, display the alert dialog
+        dialog.show()
+    }
+
+    // Extension function to show toast message
+    fun Context.toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
 }
+
+
+
