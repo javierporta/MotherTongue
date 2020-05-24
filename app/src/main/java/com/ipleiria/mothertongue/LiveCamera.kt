@@ -141,12 +141,20 @@ class LiveCamera : AppCompatActivity() {
 
                     //ToDo: Hide camera preview, show words learnt!
 
+                    saveLevelCompleted()
+
                     Handler().postDelayed({
                         finish()
                     }, TIME_TO_STOP_AFTER_GUESS_ALL_WORDS)
                 }
             }
         }
+    }
+
+    private fun saveLevelCompleted() {
+        var currentGameLevel = Game.gameStatus.gameLevels[Game.gameStatus.currentGameLevelIndex]
+        currentGameLevel.isComplete = true
+
     }
 
     private fun initializeProgressBar() {

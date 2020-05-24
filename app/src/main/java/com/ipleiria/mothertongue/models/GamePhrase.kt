@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.io.Serializable
 
-data class GamePhrase(var phrase: String?, var wasGuessed: Boolean) : Parcelable {
+data class GamePhrase(var phrase: String?, var wasGuessed: Boolean) : Parcelable, Serializable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readByte() != 0.toByte()
