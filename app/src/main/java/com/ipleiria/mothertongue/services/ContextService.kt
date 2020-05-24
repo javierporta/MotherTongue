@@ -26,10 +26,10 @@ class ContextService {
 
     private val interestPlaces = arrayOf("CAFE", "PARK", "SHOPPING")
     private val defaultPlaces = arrayOf("HOUSE", "BUILDING", "STREET")
-    var allPossibleActions= arrayOf("IN_VEHICLE", "ON_BICYCLE", "ON_FOOT", "STILL", "UNKNOWN", "TILTING", "UNKNOWN", "WALKING", "RUNNING")
-    val thresholdPlaces = 0.60
-    val thresholdNearbyPlaces = 0.30
-    val unsupportedPlace ="UNSUPPOTED_PLACE"
+    private var allPossibleActions= arrayOf("IN_VEHICLE", "ON_BICYCLE", "ON_FOOT", "STILL", "UNKNOWN", "TILTING", "UNKNOWN", "WALKING", "RUNNING")
+    private val thresholdPlaces = 0.60
+    private val thresholdNearbyPlaces = 0.30
+    private val unsupportedPlace ="UNSUPPOTED_PLACE"
 
     var possibleStreetActions= arrayOf("ON_BICYCLE", "ON_FOOT", "RUNNING",  "WALKING")
 
