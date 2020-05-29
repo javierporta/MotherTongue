@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.location.DetectedActivity
+import com.google.android.gms.location.Geofence
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.libraries.places.api.model.Place
 import com.google.maps.GeoApiContext
@@ -13,6 +14,8 @@ import com.ipleiria.mothertongue.MainActivity
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
 import com.ipleiria.mothertongue.google_awareness.SnapshotApiClient
+import com.ipleiria.mothertongue.google_geofencing.Reminder
+import com.ipleiria.mothertongue.google_geofencing.ReminderRepository
 import com.ipleiria.mothertongue.google_palces.PlacesApiClient
 
 
@@ -24,6 +27,7 @@ class ContextService {
     private val thresholdPlaces = 0.60
     private val thresholdNearbyPlaces = 0.30
     private val unsupportedPlace ="UNSUPPOTED_PLACE"
+    private lateinit var repository: ReminderRepository
 
     var possibleStreetActions= arrayOf("ON_BICYCLE", "ON_FOOT", "RUNNING",  "WALKING")
 
@@ -182,6 +186,46 @@ class ContextService {
         }
 
         return unsupportedPlace
+    }
+
+    private fun exitGeofence(reminder: Reminder, context: MainActivity): Reminder?{
+
+        repository = ReminderRepository(context)
+
+        var places =repository.getAll();
+
+        for (r in places) {
+            var geofence =buildGeofence(r)
+            if(geofence!=null && geofence.){
+
+            }
+        }
+        return null
+    }
+
+    private fun buildGeofence(reminder: Reminder): Geofence? {
+        val latitude = reminder.latLng?.latitude
+        val longitude = reminder.latLng?.longitude
+        val radius = reminder.radius
+
+        if (latitude != null && longitude != null && radius != null) {
+            return Geofence.Builder()
+                // 1
+                .setRequestId(reminder.id)
+                // 2
+                .setCircularRegion(
+                    latitude,
+                    longitude,
+                    radius.toFloat()
+                )
+                // 3
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                // 4
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .build()
+        }
+
+        return null
     }
 
 
