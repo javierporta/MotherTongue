@@ -81,6 +81,9 @@ class ContextService {
 
 
         activity.startLoading();
+        Toast.makeText(activity,  activity.applicationContext.getString(R.string.location_waiting_message),
+            Toast.LENGTH_LONG).show()
+
         PlacesApiClient.instance.getNearbyPlacesAsync(activity,apiKey)
             .addOnSuccessListener { response ->
 

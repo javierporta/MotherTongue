@@ -55,6 +55,7 @@
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCI__dqYhIXX1ksx2CcvjX_TClMvvjCmvs</string>
 
+    <string name="location_waiting_message" translatable="false">Analyzed the location, wait ...</string>
     <string-array name="places_array">
         <item>Select...</item>
         <item>HOUSE</item>
