@@ -345,6 +345,13 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
         super.onActivityResult(requestCode, Activity.RESULT_CANCELED, data)
     }
+
+    fun goToGameStatus(view: View) {
+        val intent = Intent(this, GameStatusActivity::class.java)
+
+        // start your next activity
+        startActivity(intent)
+    }
 }
 
 
