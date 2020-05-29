@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         stopLoading()
 
 
-        ContextService.instance.detectPlace(this, binding);
+        //ContextService.instance.detectPlace(this, binding);
         
         binding.scoreTextView.text = Game.gameStatus.getScore().toString()
 
