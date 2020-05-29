@@ -122,6 +122,8 @@ class ContextService {
                             val intent = Intent(activity, Location::class.java)
                             // To pass any data to next activity
                             intent.putExtra("detectPlace", unsupportedPlace)
+                            intent.putExtra("latitude",  locationResponse.location.latitude)
+                            intent.putExtra("longitude", locationResponse.location.longitude)
                             // start your next activity
                             activity.startActivityForResult(intent,1)
                         }

@@ -6,29 +6,50 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.gms.awareness.fence.DetectedActivityFence
 import com.google.android.gms.awareness.fence.FenceState
 import com.google.android.gms.awareness.fence.FenceStateMap
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.*
 import com.ipleiria.mothertongue.google_awareness.FenceApiClient
+import com.ipleiria.mothertongue.google_geofencing.Reminder
+import com.ipleiria.mothertongue.google_geofencing.ReminderRepository
 import com.ipleiria.mothertongue.utils.IFenceReceiver
+import kotlinx.android.synthetic.main.activity_location.*
 import java.sql.Timestamp
 
 
-class Location : AppCompatActivity() {
+class Location : AppCompatActivity(), OnMapReadyCallback {
 
-    private var myPendingIntent: PendingIntent? = null
-    private var fenceReceiver: FenceReceiver? = null
+    private lateinit var map: GoogleMap
+    private var reminder = Reminder(latLng = null, radius = null, message = null)
+    private val EXTRA_LAT_LNG = "EXTRA_LAT_LNG"
+    private val EXTRA_ZOOM = "EXTRA_ZOOM"
+    private lateinit var repository: ReminderRepository
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
+
+        marker.visibility = View.GONE
+        repository = ReminderRepository(this)
 
         val mySpinner = findViewById(R.id.location) as Spinner
 
@@ -38,42 +59,8 @@ class Location : AppCompatActivity() {
         )
         val places = arrayOf(resources.getStringArray(R.array.places_array))
 
-        setupFences()
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter);
-
-        var textfence = ""
-        val fenceClient= FenceApiClient.instance(myPendingIntent,fenceReceiver)
-        val stateFence =
-            DetectedActivityFence.during(DetectedActivityFence.STILL);
-        fenceClient.addFenceSync(this,"walkingFence", stateFence)
-            .addOnSuccessListener {
-
-                fenceClient.queryFencesAsyc(this)
-                    .addOnSuccessListener { fenceQueryResponse ->
-                        var fenceStateMap: FenceStateMap = fenceQueryResponse.fenceStateMap
-
-                        var fenceInfo = ""
-                        for (fenceKey in fenceStateMap.fenceKeys) {
-                            val state = fenceStateMap.getFenceState(fenceKey).currentState
-                            fenceInfo += "$fenceKey: ${if (state == FenceState.TRUE) "TRUE" else if (state == FenceState.FALSE) "FALSE" else "UNKNOWN"}".trimIndent()
-                        }
-                        val timestamp = Timestamp(System.currentTimeMillis())
-                        textfence = "[Fences @ $timestamp]> Fences' states: ${if (fenceInfo == "") "No registered fences." else fenceInfo}".trimIndent()
-
-                    }
-                    .addOnFailureListener { e ->
-                        val timestamp = Timestamp(System.currentTimeMillis())
-                        val text = "[Fences @ $timestamp] Fences could not be queried: ${e.message}".trimIndent()
-                        Log.e("TAG_FENCE", text)
-                    }
-            }.addOnFailureListener { e ->
-
-                val timestamp = Timestamp(System.currentTimeMillis())
-                val text = "\n\n[Fences @ " + timestamp + "]\n" + "Fence " + "walkingFence" +
-                        "could not be registered: " + e.message
-                Log.e("TAG_FENCE", text)
-            }
 
         mySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -88,51 +75,76 @@ class Location : AppCompatActivity() {
                 }
             }
         }
+
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+
     }
 
-    private fun setupFences()
-    {
-        val intent = Intent("FENCE_RECEIVER_ACTION")
-        myPendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-        fenceReceiver = FenceReceiver()//TODO
-        registerReceiver(fenceReceiver, IntentFilter("FENCE_RECEIVER_ACTION"))
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+        map.uiSettings.isMapToolbarEnabled = false
+        centerCamera()
+
     }
 
-    private inner class FenceReceiver : BroadcastReceiver(), IFenceReceiver {
-        override fun onReceive(context: Context?, intent: Intent) {
-            if (intent.action != "FENCE_RECEIVER_ACTION") {
-                Log.e("TAG_FENCES", "Received an unsupported action in FenceReceiver: action="
-                        + intent.action )
-                return
-            }
-            val fenceState = FenceState.extract(intent)
-            var fenceInfo: String? = null
-            when (fenceState.fenceKey) {
-                "headphoneFence" -> when (fenceState.currentState) {
-                    FenceState.TRUE -> fenceInfo = "TRUE | Headphones are plugged in."
-                    FenceState.FALSE -> fenceInfo = "FALSE | Headphones are unplugged."
-                    FenceState.UNKNOWN -> fenceInfo = "Error: unknown state."
-                }
-                "walkingFence" -> when (fenceState.currentState) {
-                    FenceState.TRUE -> fenceInfo = "TRUE | Walking."
-                    FenceState.FALSE -> fenceInfo = "FALSE | Not walking."
-                    FenceState.UNKNOWN -> fenceInfo = "Error: unknown state."
-                }
-                "timeFence" -> when (fenceState.currentState) {
-                    FenceState.TRUE -> fenceInfo = "TRUE | Within timeslot."
-                    FenceState.FALSE -> fenceInfo = "FALSE | Out of timeslot."
-                    FenceState.UNKNOWN -> fenceInfo = "Error: unknown state."
-                }
-                "walkingWithHeadphonesFenceKey" -> when (fenceState.currentState) {
-                    FenceState.TRUE -> fenceInfo = "TRUE | walkingWithHead."
-                    FenceState.FALSE -> fenceInfo = "FALSE | No walkingWithHead."
-                }
-                else -> fenceInfo = "Error: unknown fence: " + fenceState.fenceKey
-            }
-            val timestamp = Timestamp(System.currentTimeMillis())
-            val text = ("\n\n[Fences @ " + timestamp + "]\n"  + fenceState.fenceKey + ": " + fenceInfo)
-            //textView.setText(text + textView.getText())
+    private fun centerCamera() {
+        if (intent != null) {
+
+            var bundle :Bundle ?=intent.extras
+            var lat = bundle!!.get("latitude") as Double
+            var log = bundle!!.get("longitude") as Double
+            val latLng = LatLng(lat,log)
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 110f))
+
+            reminder.latLng = map.cameraPosition.target
+            reminder.message = "dddd"
+            reminder.radius = 5.0
+
+            showReminderInMap(this, map, reminder)
         }
+    }
+
+    fun showReminderInMap(context: Context,
+                          map: GoogleMap,
+                          reminder: Reminder) {
+        if (reminder.latLng != null) {
+            val latLng = reminder.latLng as LatLng
+            val vectorToBitmap = vectorToBitmap(context.resources, R.drawable.ic_twotone_location_on_48px)
+            val marker = map.addMarker(MarkerOptions().position(latLng).icon(vectorToBitmap))
+            marker.tag = reminder.id
+            if (reminder.radius != null) {
+                val radius = reminder.radius as Double
+                map.addCircle(
+                    CircleOptions()
+                        .center(reminder.latLng)
+                        .radius(radius)
+                        .strokeColor(ContextCompat.getColor(context, R.color.colorAccent))
+                        .fillColor(ContextCompat.getColor(context, R.color.colorReminderFill)))
+            }
+        }
+    }
+
+    fun vectorToBitmap(resources: Resources, @DrawableRes id: Int): BitmapDescriptor {
+        val vectorDrawable = ResourcesCompat.getDrawable(resources, id, null)
+        val bitmap = Bitmap.createBitmap(vectorDrawable!!.intrinsicWidth,
+            vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+    private fun addReminder(reminder: Reminder) {
+        repository.add(reminder,
+            success = {
+
+            },
+            failure = {
+                //Snackbar.make(main, it, Snackbar.LENGTH_LONG).show()
+            })
     }
 
 }
