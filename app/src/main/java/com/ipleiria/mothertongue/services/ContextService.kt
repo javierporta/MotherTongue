@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.location.DetectedActivity
 import com.google.android.gms.location.Geofence
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.libraries.places.api.model.Place
 import com.google.maps.GeoApiContext
@@ -123,13 +124,25 @@ class ContextService {
 
                         activity.stopLoading()
                         if(detectPlace == unsupportedPlace){
-                            val intent = Intent(activity, Location::class.java)
-                            // To pass any data to next activity
-                            intent.putExtra("detectPlace", unsupportedPlace)
-                            intent.putExtra("latitude",  locationResponse.location.latitude)
-                            intent.putExtra("longitude", locationResponse.location.longitude)
-                            // start your next activity
-                            activity.startActivityForResult(intent,1)
+                            val latLng = LatLng(locationResponse.location.latitude,locationResponse.location.longitude)
+                            var reminder = Reminder(latLng = latLng, radius = null, message = null)
+                            val location  = exitGeofence(reminder,activity)
+
+                            if(location == null)
+                            {
+                                val intent = Intent(activity, Location::class.java)
+                                // To pass any data to next activity
+                                intent.putExtra("detectPlace", unsupportedPlace)
+                                intent.putExtra("latitude",  locationResponse.location.latitude)
+                                intent.putExtra("longitude", locationResponse.location.longitude)
+                                // start your next activity
+                                activity.startActivityForResult(intent,1)
+                            }else{
+                                binding.detectedPlaceNametextView.text = location?.message!!
+                                activity.stopLoading()
+                            }
+
+
                         }
                     }
                 }
@@ -195,38 +208,16 @@ class ContextService {
         var places =repository.getAll();
 
         for (r in places) {
-            var geofence =buildGeofence(r)
-            if(geofence!=null && geofence.){
 
-            }
+            val curDist = FloatArray(2)
+            android.location.Location.distanceBetween(r.latLng?.latitude!!, r.latLng?.latitude!!, reminder.latLng?.latitude!!, reminder.latLng?.longitude!!,curDist)
+
+            var dist =curDist[0] / 10000000
+            if(r.message!= null && r.radius!= null && dist <= r.radius!!)
+                return  r
+
         }
         return null
     }
-
-    private fun buildGeofence(reminder: Reminder): Geofence? {
-        val latitude = reminder.latLng?.latitude
-        val longitude = reminder.latLng?.longitude
-        val radius = reminder.radius
-
-        if (latitude != null && longitude != null && radius != null) {
-            return Geofence.Builder()
-                // 1
-                .setRequestId(reminder.id)
-                // 2
-                .setCircularRegion(
-                    latitude,
-                    longitude,
-                    radius.toFloat()
-                )
-                // 3
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                // 4
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .build()
-        }
-
-        return null
-    }
-
 
 }

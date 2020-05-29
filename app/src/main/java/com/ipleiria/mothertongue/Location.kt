@@ -123,6 +123,7 @@ class Location : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addReminder(reminder: Reminder) {
+        reminder.radius = 5.0
         repository.add(reminder,
             success = {
                 finish()
