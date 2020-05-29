@@ -53,7 +53,7 @@ class ObjectGraphic internal constructor(
 
     companion object {
         private const val TEXT_SIZE = 54.0f
-        private const val STROKE_WIDTH = 4.0f
+        internal const val STROKE_WIDTH = 4.0f
 
         private fun getCategoryName(@FirebaseVisionObject.Category category: Int): String {
             when (category) {

@@ -6,17 +6,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000"
+        android:background="@color/colorPrimaryDark"
         android:keepScreenOn="true">
 
         <com.ipleiria.mothertongue.camera.CameraSourcePreview
             android:id="@+id/camera_source_preview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/currentWordTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,15 +28,16 @@
         </com.ipleiria.mothertongue.camera.CameraSourcePreview>
 
         <TextView
-            android:id="@+id/lookFor"
+            android:id="@+id/lastWordGuessedTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/looking_for"
-            android:textColor="#FAFAFA"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textColor="#C5CAE9"
+            app:layout_constraintBottom_toTopOf="@+id/currentWordTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/camera_source_preview" />
 
         <TextView
             android:id="@+id/currentWordTextView"
@@ -46,11 +45,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
-            android:text="WordToSearch"
             android:textColor="#FAFAFA"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/lookFor" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/levelProgressBar"
@@ -63,6 +62,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/lastWordlCheckImageView"
+            android:layout_width="14dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="2dp"
+            android:contentDescription="@android:string/ok"
+            android:scaleType="centerInside"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/lastWordGuessedTextView"
+            app:layout_constraintStart_toEndOf="@+id/lastWordGuessedTextView"
+            app:layout_constraintTop_toTopOf="@+id/lastWordGuessedTextView"
+            app:srcCompat="@drawable/ic_icons_ok" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

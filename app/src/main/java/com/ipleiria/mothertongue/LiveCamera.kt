@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -21,9 +22,6 @@ import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.object_detection.ImageLabelingProcessor
 import com.ipleiria.mothertongue.utils.GraphicOverlay
 import java.io.IOException
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.concurrent.schedule
 
 
 class LiveCamera : AppCompatActivity() {
@@ -64,6 +62,13 @@ class LiveCamera : AppCompatActivity() {
     //endregion
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //hide toolbar
+        try {
+            this.supportActionBar!!.hide()
+        } catch (e: NullPointerException) {
+        }
+
         //Get intent param
         firebaseSelectedLanguageEnum = intent.getIntExtra("firebaseSelectedLanguageEnum", 0)
 
@@ -109,7 +114,10 @@ class LiveCamera : AppCompatActivity() {
                     binding.currentWordTextView.text = feedbackCurrentWord
                 }
                 if (feedbackToast != null) {
-                    lastFeedbackToast = feedbackToast
+                    lastFeedbackToast = feedbackToast //here it is saved last guessed word
+
+                    binding.lastWordGuessedTextView.text = lastFeedbackToast
+                    binding.lastWordlCheckImageView.visibility = View.VISIBLE
 
                     //Pick a random phrase to congrats the user!
                     val praisePhrase =
@@ -137,7 +145,11 @@ class LiveCamera : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
 
-                    //ToDO: Play TaDa sound
+                    //Play TaDa sound after 1 sec
+                    Handler().postDelayed({
+                        mediaPlayer = MediaPlayer.create(this@LiveCamera, R.raw.tada_sound)
+                        mediaPlayer.start()
+                    }, 500)
 
                     //ToDo: Hide camera preview, show words learnt!
 
