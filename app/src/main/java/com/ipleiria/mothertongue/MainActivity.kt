@@ -343,7 +343,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             binding.detectedPlaceNametextView.text = selectdPlace
             stopLoading()
         }
-        super.onActivityResult(requestCode, Activity.RESULT_FIRST_USER, data)
+
+        data?.putExtra("FOM_ACTIVITY", "Location")
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }
 
