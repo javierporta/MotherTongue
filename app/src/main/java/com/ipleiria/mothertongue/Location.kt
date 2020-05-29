@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -127,6 +128,7 @@ class Location : AppCompatActivity(), OnMapReadyCallback {
                 finish()
             },
             failure = {
+                Log.e("TAG_LOCATION", it)
                 //Snackbar.make(main, it, Snackbar.LENGTH_LONG).show()
             })
     }

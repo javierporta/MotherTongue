@@ -29,10 +29,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private val mainModel: MainModel = MainModel("", "Park","")
     private var firebaseSelectedLanguageEnum: Int = 0
 
-    public  var nearbyPlaces ="";
+    private var PAGE = "inti"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         initializeLanguageSpinner()
@@ -49,16 +50,16 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onStart() {
-        super.onStart()
+        if(PAGE != "Location") {
+            super.onStart()
 
-        stopLoading()
-
-
-        //ContextService.instance.detectPlace(this, binding);
-        
-        binding.scoreTextView.text = Game.gameStatus.getScore().toString()
+            stopLoading()
+            ContextService.instance.detectPlace(this, binding);
+            binding.scoreTextView.text = Game.gameStatus.getScore().toString()
+        }
 
     }
+
 
     private fun initializeLanguageSpinner() {
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -344,7 +345,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             stopLoading()
         }
 
-        data?.putExtra("FOM_ACTIVITY", "Location")
+        this.PAGE = "Location"
         super.onActivityResult(requestCode, resultCode, data)
     }
 }
