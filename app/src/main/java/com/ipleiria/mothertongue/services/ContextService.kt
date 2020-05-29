@@ -141,6 +141,7 @@ class ContextService {
                                 // start your next activity
                                 activity.startActivityForResult(intent,1)
                             }else{
+                                binding.mainModel?.currentPlaceName =  location?.message!!
                                 binding.detectedPlaceNametextView.text = location?.message!!
                                 activity.stopLoading()
                             }

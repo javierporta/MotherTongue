@@ -346,7 +346,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         if ( requestCode == 1  && resultCode == RESULT_OK) {
             val selectdPlace: String? = data?.getStringExtra("SELECTED_PLACE")
             binding.detectedPlaceNametextView.text = selectdPlace
+            mainModel.currentPlaceName = selectdPlace!!
             stopLoading()
+            binding.playButton.visibility = View.VISIBLE
         }
 
         this.PAGE = "Location"
