@@ -82,7 +82,7 @@ class Location : AppCompatActivity(), OnMapReadyCallback {
             var lat = bundle!!.get("latitude") as Double
             var log = bundle!!.get("longitude") as Double
             val latLng = LatLng(lat,log)
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 110f))
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 100f))
 
             reminder.latLng = map.cameraPosition.target
             reminder.message = "dddd"
