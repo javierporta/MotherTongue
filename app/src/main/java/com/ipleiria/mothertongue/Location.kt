@@ -51,6 +51,8 @@ class Location : AppCompatActivity(), OnMapReadyCallback {
         marker.visibility = View.GONE
         repository = ReminderRepository(this)
 
+        var data = repository.getAll()
+
         val mySpinner = findViewById(R.id.location) as Spinner
 
         val myAdapter = ArrayAdapter(
@@ -70,8 +72,9 @@ class Location : AppCompatActivity(), OnMapReadyCallback {
                     val text = mySpinner.selectedItem.toString()
                     val resultado = getIntent();
                     resultado.putExtra("SELECTED_PLACE", text)
+                    reminder.message = text;
                     setResult(Activity.RESULT_OK, resultado)
-                    finish()
+                    addReminder(reminder)
                 }
             }
         }
@@ -79,8 +82,6 @@ class Location : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -140,7 +141,7 @@ class Location : AppCompatActivity(), OnMapReadyCallback {
     private fun addReminder(reminder: Reminder) {
         repository.add(reminder,
             success = {
-
+                finish()
             },
             failure = {
                 //Snackbar.make(main, it, Snackbar.LENGTH_LONG).show()
