@@ -222,6 +222,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding.pBar.visibility = View.VISIBLE
         binding.playButton.isClickable = false
         binding.playButton.isEnabled = false
+        binding.playButton.visibility = View.GONE
 
     }
 
@@ -229,6 +230,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding.playButton.isClickable = true
         binding.playButton.isEnabled = true
         binding.pBar.visibility = View.GONE
+        binding.playButton.visibility = View.VISIBLE
     }
 
     override fun onPause() {
