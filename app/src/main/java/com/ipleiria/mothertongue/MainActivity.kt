@@ -26,7 +26,7 @@ import java.io.*
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
-    private val mainModel: MainModel = MainModel("", "Park","")
+    private val mainModel: MainModel = MainModel("", "","")
     private var firebaseSelectedLanguageEnum: Int = 0
 
     private var PAGE = "inti"
