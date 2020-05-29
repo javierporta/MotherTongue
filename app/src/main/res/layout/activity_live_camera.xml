@@ -28,7 +28,7 @@
         </com.ipleiria.mothertongue.camera.CameraSourcePreview>
 
         <TextView
-            android:id="@+id/lastWordGuessed"
+            android:id="@+id/lastWordGuessedTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -62,6 +62,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/lastWordlCheckImageView"
+            android:layout_width="14dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="2dp"
+            android:contentDescription="@android:string/ok"
+            android:scaleType="centerInside"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/lastWordGuessedTextView"
+            app:layout_constraintStart_toEndOf="@+id/lastWordGuessedTextView"
+            app:layout_constraintTop_toTopOf="@+id/lastWordGuessedTextView"
+            app:srcCompat="@drawable/ic_icons_ok" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

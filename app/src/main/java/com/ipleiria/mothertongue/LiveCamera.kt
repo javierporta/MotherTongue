@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -113,7 +114,10 @@ class LiveCamera : AppCompatActivity() {
                     binding.currentWordTextView.text = feedbackCurrentWord
                 }
                 if (feedbackToast != null) {
-                    lastFeedbackToast = feedbackToast
+                    lastFeedbackToast = feedbackToast //here it is saved last guessed word
+
+                    binding.lastWordGuessedTextView.text = lastFeedbackToast
+                    binding.lastWordlCheckImageView.visibility = View.VISIBLE
 
                     //Pick a random phrase to congrats the user!
                     val praisePhrase =

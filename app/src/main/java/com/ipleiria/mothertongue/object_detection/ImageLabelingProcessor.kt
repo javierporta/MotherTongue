@@ -117,7 +117,7 @@ class ImageLabelingProcessor(
             //Object found by the user
             //ToDo: Prise the user with different phrase, save points somewhere
             //labelGraphic = LabelGraphic(graphicOverlay, emptyList())
-            communicateWithUIThread(LiveCamera.ACTION_TOAST_KEY, "Tostada!")
+            communicateWithUIThread(LiveCamera.ACTION_TOAST_KEY, currentObjectToSearch?.phrase!!)
             this.markCurrentPhraseAsGuessed();
             communicateWithUIThread(
                 LiveCamera.ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY,
