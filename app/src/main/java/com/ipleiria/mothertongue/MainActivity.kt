@@ -50,12 +50,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onStart() {
+        super.onStart()
+        stopLoading()
+        binding.scoreTextView.text = Game.gameStatus.getScore().toString()
+        
         if(PAGE != "Location") {
-            super.onStart()
-
-            stopLoading()
             ContextService.instance.detectPlace(this, binding);
-            binding.scoreTextView.text = Game.gameStatus.getScore().toString()
         }
 
     }
