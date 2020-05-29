@@ -27,7 +27,7 @@ class ContextService {
     private var allPossibleActions= arrayOf("IN_VEHICLE", "ON_BICYCLE", "ON_FOOT", "STILL", "UNKNOWN", "TILTING", "UNKNOWN", "WALKING", "RUNNING")
     private val thresholdPlaces = 0.60
     private val thresholdNearbyPlaces = 0.30
-    private val unsupportedPlace ="UNSUPPOTED_PLACE"
+    private val unsupportedPlace =""
     private lateinit var repository: ReminderRepository
 
     var possibleStreetActions= arrayOf("ON_BICYCLE", "ON_FOOT", "RUNNING",  "WALKING")
