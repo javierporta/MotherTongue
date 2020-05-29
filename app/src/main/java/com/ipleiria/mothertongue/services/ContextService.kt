@@ -5,6 +5,8 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.location.DetectedActivity
+import com.google.android.gms.location.Geofence
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.libraries.places.api.model.Place
 import com.google.maps.GeoApiContext
@@ -13,6 +15,8 @@ import com.ipleiria.mothertongue.MainActivity
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
 import com.ipleiria.mothertongue.google_awareness.SnapshotApiClient
+import com.ipleiria.mothertongue.google_geofencing.Reminder
+import com.ipleiria.mothertongue.google_geofencing.ReminderRepository
 import com.ipleiria.mothertongue.google_palces.PlacesApiClient
 
 
@@ -24,6 +28,7 @@ class ContextService {
     private val thresholdPlaces = 0.60
     private val thresholdNearbyPlaces = 0.30
     private val unsupportedPlace ="UNSUPPOTED_PLACE"
+    private lateinit var repository: ReminderRepository
 
     var possibleStreetActions= arrayOf("ON_BICYCLE", "ON_FOOT", "RUNNING",  "WALKING")
 
@@ -119,11 +124,25 @@ class ContextService {
 
                         activity.stopLoading()
                         if(detectPlace == unsupportedPlace){
-                            val intent = Intent(activity, Location::class.java)
-                            // To pass any data to next activity
-                            intent.putExtra("detectPlace", unsupportedPlace)
-                            // start your next activity
-                            activity.startActivityForResult(intent,1)
+                            val latLng = LatLng(locationResponse.location.latitude,locationResponse.location.longitude)
+                            var reminder = Reminder(latLng = latLng, radius = null, message = null)
+                            val location  = exitGeofence(reminder,activity)
+
+                            if(location == null)
+                            {
+                                val intent = Intent(activity, Location::class.java)
+                                // To pass any data to next activity
+                                intent.putExtra("detectPlace", unsupportedPlace)
+                                intent.putExtra("latitude",  locationResponse.location.latitude)
+                                intent.putExtra("longitude", locationResponse.location.longitude)
+                                // start your next activity
+                                activity.startActivityForResult(intent,1)
+                            }else{
+                                binding.detectedPlaceNametextView.text = location?.message!!
+                                activity.stopLoading()
+                            }
+
+
                         }
                     }
                 }
@@ -182,5 +201,23 @@ class ContextService {
         return unsupportedPlace
     }
 
+    private fun exitGeofence(reminder: Reminder, context: MainActivity): Reminder?{
+
+        repository = ReminderRepository(context)
+
+        var places =repository.getAll();
+
+        for (r in places) {
+
+            val curDist = FloatArray(2)
+            android.location.Location.distanceBetween(r.latLng?.latitude!!, r.latLng?.latitude!!, reminder.latLng?.latitude!!, reminder.latLng?.longitude!!,curDist)
+
+            var dist =curDist[0] / 10000000
+            if(r.message!= null && r.radius!= null && dist <= r.radius!!)
+                return  r
+
+        }
+        return null
+    }
 
 }
