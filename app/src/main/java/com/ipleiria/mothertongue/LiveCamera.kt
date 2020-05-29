@@ -21,9 +21,6 @@ import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.object_detection.ImageLabelingProcessor
 import com.ipleiria.mothertongue.utils.GraphicOverlay
 import java.io.IOException
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.concurrent.schedule
 
 
 class LiveCamera : AppCompatActivity() {
@@ -64,6 +61,13 @@ class LiveCamera : AppCompatActivity() {
     //endregion
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //hide toolbar
+        try {
+            this.supportActionBar!!.hide()
+        } catch (e: NullPointerException) {
+        }
+
         //Get intent param
         firebaseSelectedLanguageEnum = intent.getIntExtra("firebaseSelectedLanguageEnum", 0)
 

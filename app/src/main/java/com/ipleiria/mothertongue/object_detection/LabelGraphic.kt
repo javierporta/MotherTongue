@@ -1,7 +1,6 @@
 package com.ipleiria.mothertongue.object_detection
 
 import android.graphics.*
-import android.util.Log
 import com.ipleiria.mothertongue.utils.GraphicOverlay
 
 /** Graphic instance for rendering a label within an associated graphic overlay view.  */
