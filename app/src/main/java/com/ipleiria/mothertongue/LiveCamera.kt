@@ -145,7 +145,11 @@ class LiveCamera : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
 
-                    //ToDO: Play TaDa sound
+                    //Play TaDa sound after 1 sec
+                    Handler().postDelayed({
+                        mediaPlayer = MediaPlayer.create(this@LiveCamera, R.raw.tada_sound)
+                        mediaPlayer.start()
+                    }, 500)
 
                     //ToDo: Hide camera preview, show words learnt!
 
