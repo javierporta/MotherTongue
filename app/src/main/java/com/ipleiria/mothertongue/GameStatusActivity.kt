@@ -1,7 +1,10 @@
 package com.ipleiria.mothertongue
 
 import android.os.Bundle
+import android.text.Editable
+import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.ipleiria.mothertongue.data_manager.Game
@@ -23,8 +26,21 @@ class GameStatusActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
+        binding.usernameTextView.setText(Game.gameStatus.username)
+
         getDashboardData()
     }
+
+    override fun onPause() {
+        super.onPause()
+        this.saveUsername()
+    }
+
+    private fun saveUsername() {
+        Game.gameStatus.username = binding.usernameTextView.text.toString()
+        Game.saveGame(this@GameStatusActivity)
+    }
+
 
     private fun getDashboardData() {
         binding.scoreValueTextView.text = getScore().toString()
@@ -47,7 +63,6 @@ class GameStatusActivity : AppCompatActivity() {
         var count = 0
         Game.gameStatus.gameLevels.forEach {
             it.gamePhrases.forEach {
-                it
                 if (it.wasGuessed) count++
             }
         }
