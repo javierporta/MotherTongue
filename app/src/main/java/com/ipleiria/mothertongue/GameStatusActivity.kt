@@ -56,7 +56,7 @@ class GameStatusActivity : AppCompatActivity() {
     private fun getLearnWordsList() {
         val learnWordsArray: List<String> =
             Game.gameStatus.gameLevels.flatMap { it.gamePhrases.map { it.takeIf { it.wasGuessed }?.phrase } }
-                .filterNotNull() //Another example why I love kotlin
+                .filterNotNull().sorted() //Another example why I love kotlin
 
         learntWordsAdapter =
             ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, learnWordsArray)
