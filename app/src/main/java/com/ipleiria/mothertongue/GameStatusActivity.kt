@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.ipleiria.mothertongue.data_manager.Game
 import com.ipleiria.mothertongue.databinding.ActivityGameStatusBinding
 
 

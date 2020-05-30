@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
 import com.ipleiria.mothertongue.constants.Phrases
+import com.ipleiria.mothertongue.data_manager.Game
 import com.ipleiria.mothertongue.databinding.ActivityLiveCameraBinding
 import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.object_detection.ImageLabelingProcessor

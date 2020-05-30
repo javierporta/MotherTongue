@@ -11,7 +11,7 @@ import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
-import com.ipleiria.mothertongue.Game
+import com.ipleiria.mothertongue.data_manager.Game
 import com.ipleiria.mothertongue.LiveCamera
 import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.translations.TranslatorService

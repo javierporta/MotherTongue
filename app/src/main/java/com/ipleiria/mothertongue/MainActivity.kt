@@ -1,6 +1,5 @@
 package com.ipleiria.mothertongue
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -13,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
+import com.ipleiria.mothertongue.data_manager.Game
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
 import com.ipleiria.mothertongue.models.GameLevel
 import com.ipleiria.mothertongue.models.GamePhrase
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding.mainModel = mainModel
 
         Game.initializeGame()
-        getGameData()
+        Game.getGameData(this@MainActivity)
 
         binding.scoreTextView.text = Game.gameStatus.getScore().toString()
     }
@@ -237,54 +237,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onPause() {
         super.onPause()
-        try {
-            val fileOutputStream: FileOutputStream =
-                openFileOutput("game.bin", Context.MODE_PRIVATE)
-            val objectOutputStream = ObjectOutputStream(fileOutputStream)
-            objectOutputStream.writeObject(Game.gameStatus)
-            objectOutputStream.close()
-            fileOutputStream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Toast.makeText(
-                this@MainActivity,
-                "Could not write Game to internal storage.",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
-
-    fun getGameData() {
-        try {
-            val fileInputStream: FileInputStream = openFileInput("game.bin")
-            val objectInputStream = ObjectInputStream(fileInputStream)
-            Game.gameStatus = objectInputStream.readObject() as GameStatus
-
-            objectInputStream.close()
-            fileInputStream.close()
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-            Toast.makeText(
-                this@MainActivity,
-                "Could not read GameStatus from internal storage (no GameStatus yet?).",
-                Toast.LENGTH_LONG
-            ).show()
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Toast.makeText(
-                this@MainActivity,
-                "Error reading GameStatus from internal storage.",
-                Toast.LENGTH_LONG
-            ).show()
-        } catch (e: ClassNotFoundException) {
-            e.printStackTrace()
-            Toast.makeText(
-                this@MainActivity,
-                "Error reading GameStatus from internal storage.",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-
+        Game.saveGame(this@MainActivity)
     }
 
     // Method to show an alert dialog with yes, no and cancel button
