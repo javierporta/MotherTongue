@@ -15,7 +15,7 @@ class Game {
 
         fun initializeGame() {
             var englishGamePhrases = arrayListOf(
-                GamePhrase(phrase = "Computer", wasGuessed = false, contexts = arrayOf("STREET")),
+                GamePhrase(phrase = "Computer", wasGuessed = false, contexts = arrayOf("HOUSE")),
                 GamePhrase(phrase = "Sunglasses", wasGuessed = false, contexts = arrayOf("PARK", "SHOPPING","HOUSE")),
                 GamePhrase(phrase = "Computer", wasGuessed = false, contexts = arrayOf("HOUSE")),
                 GamePhrase(phrase = "Fruits", wasGuessed = false, contexts = arrayOf("SHOPPING","HOUSE")),
@@ -57,7 +57,7 @@ class Game {
             )
 
             var gameLevel = GameLevel(
-                "Home-" + FirebaseTranslateLanguage.EN,
+                "HOUSE-" + FirebaseTranslateLanguage.EN,
                 FirebaseTranslateLanguage.EN,
                 englishGamePhrases,
                 false

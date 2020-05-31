@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         //Try to create a new game level
         var newGameLevel = GameLevel(
-            "Home-" + firebaseSelectedLanguageEnum, //ToDo: Replace HOme by place/category
+            mainModel.currentPlaceName+ "-" + firebaseSelectedLanguageEnum, //ToDo: Replace HOme by place/category
             firebaseSelectedLanguageEnum,
             newPhrases,
             false

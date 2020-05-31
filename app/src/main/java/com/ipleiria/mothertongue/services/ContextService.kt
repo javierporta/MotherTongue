@@ -124,6 +124,7 @@ class ContextService {
 
                         val detectPlace = detectPlaceProcess(nearbyPlace.likelihood, nearbyPlace.place.types, locationResponse.location.latitude, locationResponse.location.longitude, probableActivity)
                         binding.detectedPlaceNametextView.text = detectPlace
+                        binding.mainModel?.currentPlaceName =  detectPlace
 
                         activity.stopLoading()
                         if(detectPlace == unsupportedPlace){
