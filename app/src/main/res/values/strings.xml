@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">MotherTongue</string>
-    <string name="welcome_to_mother_tongue">Welcome to Mother Tongue</string>
+    <string name="welcome_to_mother_tongue">Welcome to</string>
     <string name="what_language_do_you_want_to_explore_today">What language do you want to explore today?</string>
     <string name="play">Play</string>
     <string name="let_s_see_what_s_in_there">Let\'s see what\'s in there</string>
