@@ -15,9 +15,45 @@ class Game {
 
         fun initializeGame() {
             var englishGamePhrases = arrayListOf(
-                GamePhrase(phrase = "Computer", wasGuessed = false),
-                GamePhrase(phrase = "Sunglasses", wasGuessed = false),
-                GamePhrase(phrase = "Television", wasGuessed = false)
+                GamePhrase(phrase = "Computer", wasGuessed = false, contexts = arrayOf("STREET")),
+                GamePhrase(phrase = "Sunglasses", wasGuessed = false, contexts = arrayOf("PARK", "SHOPPING","HOUSE")),
+                GamePhrase(phrase = "Computer", wasGuessed = false, contexts = arrayOf("HOUSE")),
+                GamePhrase(phrase = "Fruits", wasGuessed = false, contexts = arrayOf("SHOPPING","HOUSE")),
+                GamePhrase(phrase = "Music Instrument", wasGuessed = false, contexts = arrayOf("HOUSE")),
+                GamePhrase(phrase = "Toy", wasGuessed = false, contexts = arrayOf("HOUSE")),
+                GamePhrase(phrase = "TV", wasGuessed = false, contexts = arrayOf("HOUSE")),
+                GamePhrase(phrase = "Pillow", wasGuessed = false, contexts = arrayOf("HOUSE")),
+                GamePhrase(phrase = "Desktop", wasGuessed = false, contexts = arrayOf("HOUSE")),
+                GamePhrase(phrase = "Shoes", wasGuessed = false, contexts = arrayOf("SHOPPING","HOUSE")),
+
+                GamePhrase(phrase = "Flower", wasGuessed = false, contexts = arrayOf("PARK","STREET")),
+                GamePhrase(phrase = "Plant", wasGuessed = false, contexts = arrayOf("PARK", "STREET")),
+                GamePhrase(phrase = "Chair", wasGuessed = false, contexts = arrayOf("CAFE", "PARK", "HOUSE")),
+                GamePhrase(phrase = "Sky", wasGuessed = false, contexts = arrayOf("PARK", "STREET")),
+                GamePhrase(phrase = "Bikes", wasGuessed = false, contexts = arrayOf("PARK", "STREET")),
+                GamePhrase(phrase = "Dog", wasGuessed = false, contexts = arrayOf("PARK")),
+                GamePhrase(phrase = "Cat", wasGuessed = false, contexts = arrayOf("PARK")),
+                GamePhrase(phrase = "Lake", wasGuessed = false, contexts = arrayOf("PARK")),
+
+                GamePhrase(phrase = "Stairs", wasGuessed = false, contexts = arrayOf("SHOPPING")),
+                GamePhrase(phrase = "Vegetables", wasGuessed = false, contexts = arrayOf("SHOPPING")),
+                GamePhrase(phrase = "Food", wasGuessed = false, contexts = arrayOf("SHOPPING")),
+                GamePhrase(phrase = "Cars", wasGuessed = false, contexts = arrayOf("PARK", "SHOPPING","STREET")),
+                GamePhrase(phrase = "Dress", wasGuessed = false, contexts = arrayOf("SHOPPING")),
+                GamePhrase(phrase = "Jeans", wasGuessed = false, contexts = arrayOf("SHOPPING")),
+
+                GamePhrase(phrase = "Coffee", wasGuessed = false, contexts = arrayOf("CAFE")),
+                GamePhrase(phrase = "Cup", wasGuessed = false, contexts = arrayOf("CAFE", "HOUSE")),
+                GamePhrase(phrase = "Table", wasGuessed = false, contexts = arrayOf("CAFE","HOUSE")),
+                GamePhrase(phrase = "Food", wasGuessed = false, contexts = arrayOf("CAFE")),
+                GamePhrase(phrase = "Wine", wasGuessed = false, contexts = arrayOf("CAFE")),
+
+                GamePhrase(phrase = "Building", wasGuessed = false, contexts = arrayOf( "STREET")),
+                GamePhrase(phrase = "Tire", wasGuessed = false, contexts = arrayOf("STREET")),
+                GamePhrase(phrase = "Street", wasGuessed = false, contexts = arrayOf("STREET")),
+                GamePhrase(phrase = "Mountain", wasGuessed = false, contexts = arrayOf("STREET")),
+                GamePhrase(phrase = "Church", wasGuessed = false, contexts = arrayOf("STREET")),
+                GamePhrase(phrase = "Beach", wasGuessed = false, contexts = arrayOf("STREET"))
             )
 
             var gameLevel = GameLevel(
