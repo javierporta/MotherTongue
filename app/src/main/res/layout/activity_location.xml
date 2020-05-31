@@ -6,6 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/template32"
         tools:context=".Location">
 
 
@@ -47,7 +48,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/location"
@@ -62,8 +63,8 @@
             android:layout_marginTop="200dp"
             app:layout_constraintTop_toTopOf="@+id/map"
             app:srcCompat="@drawable/ic_twotone_location_on_48px"
-            tools:layout_editor_absoluteX="181dp"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="181dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

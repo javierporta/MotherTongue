@@ -4,7 +4,7 @@
     <string name="what_language_do_you_want_to_explore_today">What language do you want to explore today?</string>
     <string name="play">Play</string>
     <string name="let_s_see_what_s_in_there">Let\'s see what\'s in there</string>
-    <string name="we_detected_your_are_in">We detected your are in</string>
+    <string name="we_detected_your_are_in">We detected your are in:</string>
 
     <!-- Strings for camera settings. -->
     <string name="pref_category_key_camera" translatable="false">pckc</string>

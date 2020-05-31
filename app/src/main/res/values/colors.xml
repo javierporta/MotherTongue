@@ -6,4 +6,5 @@
 
     <color name="colorReminderFill">#9600574b</color>
     <color name="colorDashboardText">#6200EE</color>
+    <color name="white_transp">#A9FFFFFF</color>
 </resources>
