@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         var newPhrases = arrayListOf<GamePhrase>()
         currentGamePhrases.forEach {
-            newPhrases.add(GamePhrase(it.phrase!!, false))
+            newPhrases.add(GamePhrase(it.phrase!!, false, it.contexts))
         }
 
         //Try to create a new game level
@@ -204,7 +204,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                         translatedPhrases.add(
                             GamePhrase(
                                 phrase = translationResult!!,
-                                wasGuessed = gamePhrase.value.wasGuessed
+                                wasGuessed = gamePhrase.value.wasGuessed,
+                                contexts = gamePhrase.value.contexts
                             )
                         )
                         //update singleton

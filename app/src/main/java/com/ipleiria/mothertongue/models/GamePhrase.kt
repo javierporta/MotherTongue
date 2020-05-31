@@ -7,7 +7,8 @@ import java.io.Serializable
 data class GamePhrase(var phrase: String?, var wasGuessed: Boolean, var contexts: Array<String>?) : Parcelable, Serializable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
+        arrayOf()
     ) {
     }
 
