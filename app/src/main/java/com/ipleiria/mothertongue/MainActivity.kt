@@ -142,7 +142,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         //ToDo: get the one depending on context
         var currentGamePhrases = arrayListOf<GamePhrase>()
         Game.gameStatus.gameLevels.first().gamePhrases.forEach {
-            currentGamePhrases.add(it)
+            if(it.contexts != null && it.contexts?.contains(mainModel.currentPlaceName)!!)
+                currentGamePhrases.add(it)
         }
 
         var newPhrases = arrayListOf<GamePhrase>()
