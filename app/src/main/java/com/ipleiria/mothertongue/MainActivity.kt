@@ -96,6 +96,15 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             "German" -> {
                 firebaseSelectedLanguageEnum = FirebaseTranslateLanguage.DE
             }
+            "Japanese" -> {
+                firebaseSelectedLanguageEnum = FirebaseTranslateLanguage.JA
+            }
+            "Chinese" -> {
+                firebaseSelectedLanguageEnum = FirebaseTranslateLanguage.ZH
+            }
+            "Arabic" -> {
+                firebaseSelectedLanguageEnum = FirebaseTranslateLanguage.AR
+            }
             else -> { // Note the block
                 //No language selected, proceed with English as default
                 firebaseSelectedLanguageEnum = FirebaseTranslateLanguage.EN

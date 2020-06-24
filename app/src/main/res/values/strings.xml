@@ -47,6 +47,9 @@
         <item>Portuguese</item>
         <item>French</item>
         <item>German</item>
+        <item>Japanese</item>
+        <item>Chinese</item>
+        <item>Arabic</item>
     </string-array>
 
     <!-- Google Awareness API_KEY -->
