@@ -53,12 +53,15 @@
     </string-array>
 
     <!-- Google Awareness API_KEY -->
-    <string name="GOOGLE_PLACE_API_KEY">AIzaSyBgBdyuMPbS1SjoZVaD_yOOTfzxZVBiSEo</string>
+    <string name="GOOGLE_PLACE_API_KEY">AIzaSyCGgZfRrrWaGGgn0le27yko9E_Smh_0VGk</string>
     <string name="looking_for">Let\'s look for ---> </string>
 
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCI__dqYhIXX1ksx2CcvjX_TClMvvjCmvs</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCGgZfRrrWaGGgn0le27yko9E_Smh_0VGk</string>
 
     <string name="location_waiting_message" translatable="false">Analyzing location, please wait...</string>
+    <string name="_0">0</string>
+    <string name="score">Score:</string>
+    <string name="game_status">GAME STATUS</string>
     <string-array name="places_array">
         <item>Select...</item>
         <item>HOUSE</item>

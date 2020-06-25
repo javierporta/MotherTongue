@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/back1"
+        android:background="@drawable/template2"
         tools:context=".MainActivity">
 
         <TextView
@@ -20,7 +20,7 @@
             android:layout_width="190dp"
             android:layout_height="56dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="160dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/back_redondos"
             android:fontFamily="@font/annie_use_your_telescope"
@@ -31,29 +31,31 @@
             android:textFontWeight="@android:integer/status_bar_notification_info_maxnum"
             android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/langLabelTextView"
-            android:layout_width="362dp"
-            android:layout_height="24dp"
+            android:layout_width="390dp"
+            android:layout_height="23dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/back_redondos"
+            android:textAlignment="center"
             android:text="@string/what_language_do_you_want_to_explore_today"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
         <Spinner
             android:id="@+id/languageSpinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_width="169dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:background="@drawable/back_redondos"
@@ -67,23 +69,26 @@
             android:layout_width="89dp"
             android:layout_height="41dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:background="@drawable/bordes_redondos"
             android:onClick="onClickPlayButton"
             android:text="@string/play"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/gameStatusButton"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
 
         <TextView
             android:id="@+id/detectedtextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/back_redondos"
             android:text="@string/we_detected_your_are_in"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.363"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/languageSpinner" />
 
@@ -105,42 +110,34 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/back_redondos"
             android:text="@string/let_s_see_what_s_in_there"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detectedtextView" />
 
-        <ProgressBar
-            android:id="@+id/pBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="9dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            android:indeterminate="true"
-            android:minWidth="200dp"
-            android:minHeight="50dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/gameStatusButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.54"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/scoreTextView"
-            android:layout_width="41dp"
-            android:layout_height="20dp"
+            android:layout_width="36dp"
+            android:layout_height="71dp"
             android:layout_marginStart="8dp"
-            android:text="0"
+            android:layout_marginTop="8dp"
+            android:text="@string/_0"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="90px"
             app:layout_constraintStart_toEndOf="@+id/scoreLabel"
-            app:layout_constraintTop_toTopOf="@+id/scoreLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/letsSeeTextView" />
 
         <TextView
             android:id="@+id/scoreLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="Score:"
+            android:layout_marginStart="156dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/score"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/letsSeeTextView" />
 
@@ -151,26 +148,45 @@
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
 
             android:background="@drawable/bordes_redondos"
             android:onClick="goToGameStatus"
-            android:text="GAME STATUS"
+            android:text="@string/game_status"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toStartOf="@+id/playButton"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scoreTextView"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="229dp"
-            android:layout_height="135dp"
-            android:layout_marginStart="56dp"
+            android:layout_width="220dp"
+            android:layout_height="97dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:contentDescription="TODO"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appTitletextView"
             app:srcCompat="@drawable/logo" />
+
+
+        <ProgressBar
+            android:id="@+id/pBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="9dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:indeterminate="true"
+            android:minWidth="200dp"
+            android:minHeight="50dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.54"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gameStatusButton" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
