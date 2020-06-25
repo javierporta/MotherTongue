@@ -38,13 +38,13 @@
         <TextView
             android:id="@+id/langLabelTextView"
             android:layout_width="390dp"
-            android:layout_height="23dp"
+            android:layout_height="30dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/back_redondos"
-            android:textAlignment="center"
             android:text="@string/what_language_do_you_want_to_explore_today"
+            android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,13 +52,13 @@
 
         <Spinner
             android:id="@+id/languageSpinner"
-            android:textAlignment="center"
             android:layout_width="169dp"
-            android:layout_height="3dp"
+            android:layout_height="30dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:background="@drawable/back_redondos"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/langLabelTextView" />
@@ -68,6 +68,7 @@
             style="@android:style/Widget.DeviceDefault.Button"
             android:layout_width="89dp"
             android:layout_height="41dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/bordes_redondos"
             android:onClick="onClickPlayButton"
@@ -75,7 +76,7 @@
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/gameStatusButton"
-            app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/scoreLabel" />
 
         <TextView
             android:id="@+id/detectedtextView"
@@ -121,13 +122,14 @@
 
         <TextView
             android:id="@+id/scoreTextView"
-            android:layout_width="36dp"
-            android:layout_height="71dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="7dp"
+            android:includeFontPadding="false"
             android:text="@string/_0"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="90px"
+            android:textSize="60px"
             app:layout_constraintStart_toEndOf="@+id/scoreLabel"
             app:layout_constraintTop_toBottomOf="@+id/letsSeeTextView" />
 
@@ -136,7 +138,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="156dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/score"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/letsSeeTextView" />
@@ -147,8 +149,9 @@
             android:layout_width="143dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
 
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/bordes_redondos"
             android:onClick="goToGameStatus"
             android:text="@string/game_status"
@@ -156,8 +159,7 @@
             app:layout_constraintEnd_toStartOf="@+id/playButton"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scoreTextView"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintTop_toBottomOf="@+id/scoreLabel" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -176,7 +178,7 @@
         <ProgressBar
             android:id="@+id/pBar"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="9dp"
+            android:layout_width="100dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:indeterminate="true"
