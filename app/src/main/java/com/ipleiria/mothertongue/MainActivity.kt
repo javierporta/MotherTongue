@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         stopLoading()
         binding.scoreTextView.text = Game.gameStatus.getScore().toString()
 
-        if(PAGE != "Location") {
+        if(PAGE != "Location" && mainModel.currentPlaceName == "") {
             ContextService.instance.detectPlace(this, binding);
         }
 
