@@ -11,9 +11,12 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
 import com.ipleiria.mothertongue.data_manager.Game
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
+import com.ipleiria.mothertongue.databinding.FragmentHomeBinding
 import com.ipleiria.mothertongue.models.GameLevel
 import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.models.GameStatus
@@ -23,32 +26,24 @@ import com.ipleiria.mothertongue.translations.TranslatorService
 import java.io.*
 
 
-class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
-
-    private lateinit var binding: ActivityMainBinding
-    private val mainModel: MainModel = MainModel("", "","")
-    private var firebaseSelectedLanguageEnum: Int = 0
-
-    private var PAGE = "inti"
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        @Suppress("UNUSED_VARIABLE")
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        initializeLanguageSpinner()
-
-        // ToDo:Get current language and current place
-
-        //bind mainModel
-        binding.mainModel = mainModel
-
-        Game.initializeGame()
-        Game.getGameData(this@MainActivity)
-
-        binding.scoreTextView.text = Game.gameStatus.getScore().toString()
+        val navController = this.findNavController(R.id.myNavHostFragment)
+        NavigationUI.setupActionBarWithNavController(this,navController)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = this.findNavController(R.id.myNavHostFragment)
+        return navController.navigateUp()
+    }
+
+/*
     override fun onStart() {
         super.onStart()
         stopLoading()
@@ -324,7 +319,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         // start your next activity
         startActivity(intent)
-    }
+    }*/
 }
 
 

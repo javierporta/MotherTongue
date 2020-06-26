@@ -5,7 +5,6 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.location.DetectedActivity
-import com.google.android.gms.location.Geofence
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.libraries.places.api.model.Place
@@ -14,10 +13,12 @@ import com.ipleiria.mothertongue.Location
 import com.ipleiria.mothertongue.MainActivity
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.databinding.ActivityMainBinding
+import com.ipleiria.mothertongue.databinding.FragmentHomeBinding
 import com.ipleiria.mothertongue.google_awareness.SnapshotApiClient
 import com.ipleiria.mothertongue.google_geofencing.Reminder
 import com.ipleiria.mothertongue.google_geofencing.ReminderRepository
 import com.ipleiria.mothertongue.google_palces.PlacesApiClient
+import com.ipleiria.mothertongue.ui.home.HomeFragment
 
 
 class ContextService {
@@ -76,15 +77,15 @@ class ContextService {
 
     }
 
-    fun detectPlace(activity: MainActivity, binding: ActivityMainBinding){
-        val apiKey: String = activity.applicationContext.getString(R.string.GOOGLE_PLACE_API_KEY)
+    fun detectPlace(context: HomeFragment, binding: FragmentHomeBinding){
+        val apiKey: String = context.activity?.applicationContext!!.getString(R.string.GOOGLE_PLACE_API_KEY)
 
 
-        activity.startLoading();
-        Toast.makeText(activity,  activity.applicationContext.getString(R.string.location_waiting_message),
+        context.startLoading();
+        Toast.makeText(context.activity,  context.activity?.applicationContext!!.getString(R.string.location_waiting_message),
             Toast.LENGTH_LONG).show()
 
-        PlacesApiClient.instance.getNearbyPlacesAsync(activity,apiKey)
+        PlacesApiClient.instance.getNearbyPlacesAsync(context.activity!!,apiKey)
             .addOnSuccessListener { response ->
 
                 var  placeLikelihoods = response.placeLikelihoods
@@ -106,12 +107,12 @@ class ContextService {
 
                 //binding.nearbyPlaces.text =  " ${place}"
 
-                SnapshotApiClient.instance.getLocationAsync(activity).addOnSuccessListener { locationResponse ->
+                SnapshotApiClient.instance.getLocationAsync(context.activity!!).addOnSuccessListener { locationResponse ->
                     var location = "\n\n${locationResponse.location.latitude} ${locationResponse.location.longitude} ${locationResponse.location.speed}"
 
 
                     //binding.nearbyPlaces.text =  " ${place}  ${location} "
-                    SnapshotApiClient.instance.detectedActivityAsync(activity).addOnSuccessListener { dar ->
+                    SnapshotApiClient.instance.detectedActivityAsync(context.activity!!).addOnSuccessListener { dar ->
                         val arr = dar.activityRecognitionResult
                         val probableActivity = arr.mostProbableActivity
                         val confidence = probableActivity.confidence
@@ -119,32 +120,32 @@ class ContextService {
                         val activityDetect = "\n\nActivity: " + activityStr + "\n\n Confidence: " + confidence + "/100"
 
                         //binding.nearbyPlaces.text =  " ${place}  ${location} ${activityDetect}"
-                        activity.stopLoading()
+                        context.stopLoading()
                         Log.i("TAG_PLACE", plText)
 
                         val detectPlace = detectPlaceProcess(nearbyPlace.likelihood, nearbyPlace.place.types, locationResponse.location.latitude, locationResponse.location.longitude, probableActivity)
                         binding.detectedPlaceNametextView.text = detectPlace
                         binding.mainModel?.currentPlaceName =  detectPlace
 
-                        activity.stopLoading()
+                        context.stopLoading()
                         if(detectPlace == unsupportedPlace){
                             val latLng = LatLng(locationResponse.location.latitude,locationResponse.location.longitude)
                             var reminder = Reminder(latLng = latLng, radius = null, message = null)
-                            val location  = exitGeofence(reminder,activity)
+                            val location  = exitGeofence(reminder,context)
 
                             if(location == null)
                             {
-                                val intent = Intent(activity, Location::class.java)
+                                /*val intent = Intent(context, Location::class.java)
                                 // To pass any data to next activity
                                 intent.putExtra("detectPlace", unsupportedPlace)
                                 intent.putExtra("latitude",  locationResponse.location.latitude)
                                 intent.putExtra("longitude", locationResponse.location.longitude)
                                 // start your next activity
-                                activity.startActivityForResult(intent,1)
+                                context.startActivityForResult(intent,1)*/
                             }else{
                                 binding.mainModel?.currentPlaceName =  location?.message!!
                                 binding.detectedPlaceNametextView.text = location?.message!!
-                                activity.stopLoading()
+                                context.stopLoading()
                             }
 
 
@@ -153,9 +154,9 @@ class ContextService {
                 }
             }.addOnFailureListener(OnFailureListener { e ->
                 e.printStackTrace()
-                Toast.makeText(activity, e.localizedMessage,
+                Toast.makeText(context.activity, e.localizedMessage,
                     Toast.LENGTH_SHORT).show()
-                activity.stopLoading()
+                context.stopLoading()
                 Log.e("TAG_PLACE", "Could not get Location: $e")
             })
     }
@@ -206,9 +207,9 @@ class ContextService {
         return unsupportedPlace
     }
 
-    private fun exitGeofence(reminder: Reminder, context: MainActivity): Reminder?{
+    private fun exitGeofence(reminder: Reminder, context: HomeFragment): Reminder?{
 
-        repository = ReminderRepository(context)
+        repository = ReminderRepository(context.activity!!)
 
         var places =repository.getAll();
 
