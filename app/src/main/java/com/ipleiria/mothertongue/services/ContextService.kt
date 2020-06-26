@@ -2,17 +2,17 @@ package com.ipleiria.mothertongue.services
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.DetectedActivity
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.libraries.places.api.model.Place
 import com.google.maps.GeoApiContext
 import com.ipleiria.mothertongue.Location
-import com.ipleiria.mothertongue.MainActivity
 import com.ipleiria.mothertongue.R
-import com.ipleiria.mothertongue.databinding.ActivityMainBinding
 import com.ipleiria.mothertongue.databinding.FragmentHomeBinding
 import com.ipleiria.mothertongue.google_awareness.SnapshotApiClient
 import com.ipleiria.mothertongue.google_geofencing.Reminder
@@ -135,13 +135,19 @@ class ContextService {
 
                             if(location == null)
                             {
-                                /*val intent = Intent(context, Location::class.java)
+                               /* val intent = Intent(context.context,Location::class.java)
                                 // To pass any data to next activity
                                 intent.putExtra("detectPlace", unsupportedPlace)
                                 intent.putExtra("latitude",  locationResponse.location.latitude)
                                 intent.putExtra("longitude", locationResponse.location.longitude)
                                 // start your next activity
                                 context.startActivityForResult(intent,1)*/
+
+                                var bundle = Bundle()
+                                bundle.putString("detectPlace", unsupportedPlace)
+                                bundle.putDouble("latitude", locationResponse.location.latitude)
+                                bundle.putDouble("longitude", locationResponse.location.longitude)
+                                context.findNavController().navigate(R.id.action_nav_home_to_userPosition, bundle)
                             }else{
                                 binding.mainModel?.currentPlaceName =  location?.message!!
                                 binding.detectedPlaceNametextView.text = location?.message!!

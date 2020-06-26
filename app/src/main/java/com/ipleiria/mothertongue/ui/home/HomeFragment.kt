@@ -72,6 +72,11 @@ class HomeFragment : Fragment(),  AdapterView.OnItemSelectedListener  {
         stopLoading()
         binding.scoreTextView.text = Game.gameStatus.getScore().toString()
 
+        arguments?.let {
+            mainModel.currentPlaceName = it.getString("SELECTED_PLACE", "")
+            binding.detectedPlaceNametextView.text = it.getString("SELECTED_PLACE", "")
+        }
+
         if(PAGE != "Location" && mainModel.currentPlaceName == "") {
             ContextService.instance.detectPlace(this, binding);
         }

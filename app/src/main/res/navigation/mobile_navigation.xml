@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_nav_home_to_liveCamera"
             app:destination="@id/liveCamera" />
+        <action
+            android:id="@+id/action_nav_home_to_userPosition"
+            app:destination="@id/userPosition" />
     </fragment>
     <fragment
         android:id="@+id/gameProfile"
@@ -27,5 +30,14 @@
         android:name="com.ipleiria.mothertongue.ui.camera.LiveCamera"
         android:label="fragment_live_camera"
         tools:layout="@layout/fragment_live_camera" />
+    <fragment
+        android:id="@+id/userPosition"
+        android:name="com.ipleiria.mothertongue.ui.location.UserPosition"
+        android:label="fragment_user_position"
+        tools:layout="@layout/fragment_user_position" >
+        <action
+            android:id="@+id/action_userPosition_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 
 </navigation>
