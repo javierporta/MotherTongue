@@ -23,7 +23,7 @@ import com.ipleiria.mothertongue.ui.home.HomeFragment
 class ContextService {
 
     private val interestPlaces = arrayOf("CAFE", "PARK", "SHOPPING")
-    private val defaultPlaces = arrayOf("HOUSE", "BUILDING", "STREET")
+    private val defaultPlaces = arrayOf("HOUSE", "STREET")
     private var allPossibleActions= arrayOf("IN_VEHICLE", "ON_BICYCLE", "ON_FOOT", "STILL", "UNKNOWN", "TILTING", "UNKNOWN", "WALKING", "RUNNING")
     private val thresholdPlaces = 0.60
     private val thresholdNearbyPlaces = 0.30
