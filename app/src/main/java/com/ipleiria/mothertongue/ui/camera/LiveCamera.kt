@@ -8,22 +8,22 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.ipleiria.mothertongue.LiveCamera
-
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
 import com.ipleiria.mothertongue.constants.Phrases
 import com.ipleiria.mothertongue.data_manager.Game
-import com.ipleiria.mothertongue.databinding.FragmentGameProfileBinding
 import com.ipleiria.mothertongue.databinding.FragmentLiveCameraBinding
 import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.object_detection.ImageLabelingProcessor
@@ -186,6 +186,11 @@ class LiveCamera : Fragment() {
         super.onResume()
         Log.d(TAG, "onResume")
         startCameraSource()
+
+        //hide appbar
+        val supportActionBar: ActionBar =
+            (requireActivity() as AppCompatActivity).getSupportActionBar()!!
+        if (supportActionBar != null) supportActionBar.hide()
     }
 
     /** Stops the camera.  */
