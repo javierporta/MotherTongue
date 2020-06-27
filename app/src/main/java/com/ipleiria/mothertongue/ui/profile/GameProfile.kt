@@ -1,26 +1,36 @@
-package com.ipleiria.mothertongue
+package com.ipleiria.mothertongue.ui.profile
 
+import android.content.Context
 import android.os.Bundle
-import android.text.Editable
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.data_manager.Game
-import com.ipleiria.mothertongue.databinding.ActivityGameStatusBinding
+import com.ipleiria.mothertongue.databinding.FragmentGameProfileBinding
+import com.ipleiria.mothertongue.databinding.FragmentHomeBinding
 
 
-class GameStatusActivity : AppCompatActivity() {
+class GameProfile : Fragment() {
 
-    private lateinit var binding: ActivityGameStatusBinding
+    private lateinit var binding: FragmentGameProfileBinding
     private lateinit var learntWordsAdapter: ArrayAdapter<String>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_game_status)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_game_status)
+        binding = DataBindingUtil.inflate<FragmentGameProfileBinding>(inflater, R.layout.fragment_game_profile, container, false)
+
+
+        return binding.root
     }
 
     override fun onStart() {
@@ -30,6 +40,17 @@ class GameStatusActivity : AppCompatActivity() {
 
         getDashboardData()
     }
+
+    override fun onPause() {
+        super.onPause()
+        this.saveUsername()
+    }
+
+    private fun saveUsername() {
+        Game.gameStatus.username = binding.usernameTextView.text.toString()
+        Game.saveGame(this.activity?.applicationContext!!)
+    }
+
 
     private fun getDashboardData() {
         binding.scoreValueTextView.text = getScore().toString()
@@ -64,9 +85,13 @@ class GameStatusActivity : AppCompatActivity() {
                 .filterNotNull().sorted() //Another example why I love kotlin
 
         learntWordsAdapter =
-            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, learnWordsArray)
+            ArrayAdapter<String>(
+                this.activity!!.applicationContext,
+                android.R.layout.simple_list_item_1,
+                learnWordsArray
+            )
         binding.learntWordsListView.adapter = learntWordsAdapter
 
-
     }
+
 }

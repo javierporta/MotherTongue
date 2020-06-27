@@ -16,9 +16,12 @@ class Game {
         fun initializeGame() {
             var englishGamePhrases = arrayListOf(
                 GamePhrase(phrase = "Computer", wasGuessed = false, contexts = arrayOf("HOUSE")),
-                GamePhrase(phrase = "Computer", wasGuessed = false, contexts = arrayOf("HOUSE")),
                 GamePhrase(phrase = "Fruit", wasGuessed = false, contexts = arrayOf("SHOPPING","HOUSE")),
-                GamePhrase(phrase = "Music Instrument", wasGuessed = false, contexts = arrayOf("HOUSE")),
+                GamePhrase(
+                    phrase = "Musical Instrument",
+                    wasGuessed = false,
+                    contexts = arrayOf("HOUSE")
+                ),
                 GamePhrase(phrase = "Toy", wasGuessed = false, contexts = arrayOf("HOUSE")),
                 GamePhrase(phrase = "TV", wasGuessed = false, contexts = arrayOf("HOUSE")),
                 GamePhrase(phrase = "Pillow", wasGuessed = false, contexts = arrayOf("HOUSE")),
