@@ -60,13 +60,12 @@ class Game {
             )
 
             var gameLevel = GameLevel(
-                "HOUSE-" + FirebaseTranslateLanguage.EN,
+                "INITIAL-" + FirebaseTranslateLanguage.EN,
                 FirebaseTranslateLanguage.EN,
                 englishGamePhrases,
                 false
             )
 
-            //ToDo: Get from persistence
             gameStatus = GameStatus("", arrayListOf())
             gameStatus.gameLevels.add(gameLevel)
         }
