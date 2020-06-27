@@ -14,9 +14,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_mtlogo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_mtlogo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
@@ -24,10 +24,6 @@
             android:name=".navigation"
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".GameStatusActivity" />
-        <activity
-            android:name=".Location"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".LiveCamera"
             android:screenOrientation="portrait" />
