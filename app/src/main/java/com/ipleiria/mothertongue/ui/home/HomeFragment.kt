@@ -205,14 +205,22 @@ class HomeFragment : Fragment(),  AdapterView.OnItemSelectedListener  {
         binding.pBar.visibility = View.VISIBLE
         binding.playButton.isClickable = false
         binding.playButton.isEnabled = false
-        binding.playButton.visibility = View.GONE
+        binding.playButton.visibility = View.INVISIBLE
+
+        binding.gameStatusButton.isClickable = false
+        binding.gameStatusButton.isEnabled = false
 
     }
 
     public fun stopLoading() {
         binding.playButton.isClickable = true
         binding.playButton.isEnabled = true
+
         binding.pBar.visibility = View.GONE
+
+        binding.gameStatusButton.isClickable = true
+        binding.gameStatusButton.isEnabled = true
+
         if(mainModel.currentPlaceName != ""){
             binding.playButton.visibility = View.VISIBLE
         }
