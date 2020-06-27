@@ -37,7 +37,9 @@
         tools:layout="@layout/fragment_user_position" >
         <action
             android:id="@+id/action_userPosition_to_nav_home"
-            app:destination="@id/nav_home" />
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/userPosition"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>
