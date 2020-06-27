@@ -198,8 +198,7 @@ class HomeFragment : Fragment(),  AdapterView.OnItemSelectedListener  {
 
     fun onClickPlayButton(view: View) {
 
-        //WARNING: Similar things should not be together in this list
-        //ToDo: get the one depending on context
+
         var currentGamePhrases = arrayListOf<GamePhrase>()
         Game.gameStatus.gameLevels.first().gamePhrases.forEach {
             if(it.contexts != null && it.contexts?.contains(mainModel.currentPlaceName)!!)

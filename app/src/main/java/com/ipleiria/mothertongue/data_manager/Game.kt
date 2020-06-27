@@ -14,6 +14,8 @@ class Game {
         lateinit var gameStatus: GameStatus
 
         fun initializeGame() {
+            //WARNING: Similar things should not be together in this list
+
             var englishGamePhrases = arrayListOf(
                 GamePhrase(phrase = "Computer", wasGuessed = false, contexts = arrayOf("HOUSE")),
                 GamePhrase(phrase = "Fruit", wasGuessed = false, contexts = arrayOf("SHOPPING","HOUSE")),
