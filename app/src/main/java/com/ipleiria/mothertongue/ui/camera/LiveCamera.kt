@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.ipleiria.mothertongue.LiveCamera
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.camera.CameraSource
@@ -53,6 +54,8 @@ class LiveCamera : Fragment() {
 
     private val TAG = "LiveCamera"
 
+    private var isLevelDone = false
+
     private var firebaseSelectedLanguageEnum: Int = 0
     private var gamePhrases: ArrayList<GamePhrase>? = null
 
@@ -71,6 +74,8 @@ class LiveCamera : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        isLevelDone = false
+
         binding = DataBindingUtil.inflate<FragmentLiveCameraBinding>(inflater, R.layout.fragment_live_camera, container, false)
 
         arguments?.let {
@@ -105,6 +110,9 @@ class LiveCamera : Fragment() {
         LiveCamera.mHandler = object : Handler(Looper.getMainLooper()) {
             override fun handleMessage(msg: Message) {
                 super.handleMessage(msg)
+
+                if (isLevelDone) return //to avoid getting new frames data when level finishes
+
                 val feedbackCurrentWord: String? =
                     msg.getData().getString(LiveCamera.ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY)
                 val feedbackToast: String? = msg.getData().getString(LiveCamera.ACTION_TOAST_KEY)
@@ -157,7 +165,10 @@ class LiveCamera : Fragment() {
                     saveLevelCompleted()
 
                     Handler().postDelayed({
-                        //finish()
+                        if (!isLevelDone) {
+                            findNavController().popBackStack()
+                            isLevelDone = true
+                        }
                     }, TIME_TO_STOP_AFTER_GUESS_ALL_WORDS)
                 }
             }

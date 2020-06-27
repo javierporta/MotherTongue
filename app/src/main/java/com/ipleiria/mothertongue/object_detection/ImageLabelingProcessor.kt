@@ -4,6 +4,7 @@ import VisionProcessorBase
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Handler
 import android.os.Message
 import android.util.Log
 import com.google.android.gms.tasks.Task
@@ -115,14 +116,20 @@ class ImageLabelingProcessor(
             )
         } else {
             //Object found by the user
-            //ToDo: Prise the user with different phrase, save points somewhere
-            //labelGraphic = LabelGraphic(graphicOverlay, emptyList())
             communicateWithUIThread(LiveCamera.ACTION_TOAST_KEY, currentObjectToSearch?.phrase!!)
             this.markCurrentPhraseAsGuessed();
             communicateWithUIThread(
                 LiveCamera.ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY,
                 currentObjectToSearch?.phrase!!
             )
+            //Level finishes, stop processing
+            Handler().postDelayed(
+                {
+                    detector.close()
+                },
+                1000L
+            ) //workaround to show the last frame. without it, frame is detected but is not shown in preview
+
         }
         graphicOverlay.add(labelGraphic)
         graphicOverlay.postInvalidate()
