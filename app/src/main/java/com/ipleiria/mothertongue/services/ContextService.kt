@@ -11,7 +11,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.libraries.places.api.model.Place
 import com.google.maps.GeoApiContext
-import com.ipleiria.mothertongue.Location
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.databinding.FragmentHomeBinding
 import com.ipleiria.mothertongue.google_awareness.SnapshotApiClient
