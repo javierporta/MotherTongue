@@ -27,7 +27,6 @@ import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.databinding.FragmentUserPositionBinding
 import com.ipleiria.mothertongue.google_geofencing.Reminder
 import com.ipleiria.mothertongue.google_geofencing.ReminderRepository
-import kotlinx.android.synthetic.main.activity_location.*
 
 class UserPosition : Fragment(), OnMapReadyCallback {
 

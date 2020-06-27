@@ -2,27 +2,18 @@ package com.ipleiria.mothertongue.ui.home
 
 import android.Manifest
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
-import com.ipleiria.mothertongue.LiveCamera
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.data_manager.Game
 import com.ipleiria.mothertongue.databinding.FragmentHomeBinding
@@ -31,7 +22,6 @@ import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.models.MainModel
 import com.ipleiria.mothertongue.services.ContextService
 import com.ipleiria.mothertongue.translations.TranslatorService
-import java.lang.Exception
 
 class HomeFragment : Fragment(),  AdapterView.OnItemSelectedListener  {
 

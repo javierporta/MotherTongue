@@ -65,7 +65,6 @@
     <string-array name="places_array">
         <item>Select...</item>
         <item>HOUSE</item>
-        <item>BUILDING</item>
         <item>STREET</item>
     </string-array>
     <string name="title_activity_navigation">navigation</string>
