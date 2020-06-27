@@ -19,7 +19,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.ipleiria.mothertongue.LiveCamera
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
@@ -107,16 +106,16 @@ class LiveCamera : Fragment() {
         mediaPlayer = MediaPlayer.create(this.activity, R.raw.success_sound)
 
         // Communicate with the UI thread
-        LiveCamera.mHandler = object : Handler(Looper.getMainLooper()) {
+        mHandler = object : Handler(Looper.getMainLooper()) {
             override fun handleMessage(msg: Message) {
                 super.handleMessage(msg)
 
                 if (isLevelDone) return //to avoid getting new frames data when level finishes
 
                 val feedbackCurrentWord: String? =
-                    msg.getData().getString(LiveCamera.ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY)
-                val feedbackToast: String? = msg.getData().getString(LiveCamera.ACTION_TOAST_KEY)
-                val feedbackLevelDone: String? = msg.getData().getString(LiveCamera.ACTION_LEVEL_DONE)
+                    msg.getData().getString(ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY)
+                val feedbackToast: String? = msg.getData().getString(ACTION_TOAST_KEY)
+                val feedbackLevelDone: String? = msg.getData().getString(ACTION_LEVEL_DONE)
                 //ToDo: convert to a switch
                 if (feedbackCurrentWord != null && feedbackCurrentWord != lastFeedbackCurrentWord) {
                     lastFeedbackCurrentWord = feedbackCurrentWord

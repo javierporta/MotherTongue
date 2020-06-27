@@ -25,9 +25,6 @@
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".LiveCamera"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
