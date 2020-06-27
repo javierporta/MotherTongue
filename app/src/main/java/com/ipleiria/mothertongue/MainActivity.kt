@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
 
     val HOME_FRAGMENT_NAME = "Home"
+    val CAMERA_FRAGMENT_NAME = "Game"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +54,16 @@ class MainActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 //nothing
+            }
+
+            //hide appbar
+            val supportActionBar: ActionBar =
+                this.getSupportActionBar()!!
+            if (destination.label == CAMERA_FRAGMENT_NAME) {
+                if (supportActionBar != null) supportActionBar.hide()
+            } else {
+                //show appbar
+                if (supportActionBar != null) supportActionBar.show()
             }
         }
     }

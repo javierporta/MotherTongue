@@ -186,11 +186,6 @@ class LiveCamera : Fragment() {
         super.onResume()
         Log.d(TAG, "onResume")
         startCameraSource()
-
-        //hide appbar
-        val supportActionBar: ActionBar =
-            (requireActivity() as AppCompatActivity).getSupportActionBar()!!
-        if (supportActionBar != null) supportActionBar.hide()
     }
 
     /** Stops the camera.  */
