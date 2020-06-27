@@ -109,8 +109,6 @@ class ContextService {
                 SnapshotApiClient.instance.getLocationAsync(context.activity!!).addOnSuccessListener { locationResponse ->
                     var location = "\n\n${locationResponse.location.latitude} ${locationResponse.location.longitude} ${locationResponse.location.speed}"
 
-
-                    //binding.nearbyPlaces.text =  " ${place}  ${location} "
                     SnapshotApiClient.instance.detectedActivityAsync(context.activity!!).addOnSuccessListener { dar ->
                         val arr = dar.activityRecognitionResult
                         val probableActivity = arr.mostProbableActivity
@@ -118,7 +116,6 @@ class ContextService {
                         val activityStr = probableActivity.toString()
                         val activityDetect = "\n\nActivity: " + activityStr + "\n\n Confidence: " + confidence + "/100"
 
-                        //binding.nearbyPlaces.text =  " ${place}  ${location} ${activityDetect}"
                         context.stopLoading()
                         Log.i("TAG_PLACE", plText)
 
@@ -134,14 +131,6 @@ class ContextService {
 
                             if(location == null)
                             {
-                               /* val intent = Intent(context.context,Location::class.java)
-                                // To pass any data to next activity
-                                intent.putExtra("detectPlace", unsupportedPlace)
-                                intent.putExtra("latitude",  locationResponse.location.latitude)
-                                intent.putExtra("longitude", locationResponse.location.longitude)
-                                // start your next activity
-                                context.startActivityForResult(intent,1)*/
-
                                 var bundle = Bundle()
                                 bundle.putString("detectPlace", unsupportedPlace)
                                 bundle.putDouble("latitude", locationResponse.location.latitude)
