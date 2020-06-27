@@ -5,25 +5,16 @@ import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.ipleiria.mothertongue.LiveCamera
 import com.ipleiria.mothertongue.R
 import com.ipleiria.mothertongue.camera.CameraSource
 import com.ipleiria.mothertongue.camera.CameraSourcePreview
-import com.ipleiria.mothertongue.constants.Phrases
 import com.ipleiria.mothertongue.data_manager.Game
 import com.ipleiria.mothertongue.databinding.FragmentLiveCameraBinding
 import com.ipleiria.mothertongue.models.GamePhrase
@@ -106,73 +97,6 @@ class LiveCamera : Fragment() {
 
         mediaPlayer = MediaPlayer.create(this.activity, R.raw.success_sound)
 
-        // Communicate with the UI thread
-        LiveCamera.mHandler = object : Handler(Looper.getMainLooper()) {
-            override fun handleMessage(msg: Message) {
-                super.handleMessage(msg)
-
-                if (isLevelDone) return //to avoid getting new frames data when level finishes
-
-                val feedbackCurrentWord: String? =
-                    msg.getData().getString(LiveCamera.ACTION_UPDATE_CURRENT_WORD_TEXT_VIEW_KEY)
-                val feedbackToast: String? = msg.getData().getString(LiveCamera.ACTION_TOAST_KEY)
-                val feedbackLevelDone: String? = msg.getData().getString(LiveCamera.ACTION_LEVEL_DONE)
-                //ToDo: convert to a switch
-                if (feedbackCurrentWord != null && feedbackCurrentWord != lastFeedbackCurrentWord) {
-                    lastFeedbackCurrentWord = feedbackCurrentWord
-                    binding.currentWordTextView.text = feedbackCurrentWord
-                }
-                if (feedbackToast != null) {
-                    lastFeedbackToast = feedbackToast //here it is saved last guessed word
-
-                    binding.lastWordGuessedTextView.text = lastFeedbackToast
-                    binding.lastWordlCheckImageView.visibility = View.VISIBLE
-
-                    //Pick a random phrase to congrats the user!
-                    val praisePhrase =
-                        Phrases.PRAISE_USER.random() // I love kotlin for this kinda things!! S2
-
-                    Toast.makeText(this@LiveCamera.activity, praisePhrase, Toast.LENGTH_SHORT).show()
-                    //Play a success sound
-                    mediaPlayer.start()
-
-                    moveProgressBar()
-
-                    //stop for a while, in case that we need to stop for a while because some objects are detected in the same frame!
-//                    preview!!.stop()
-//                    Handler().postDelayed({
-//                        startCameraSource()
-//                    }, 3000)
-                }
-                if (feedbackLevelDone != null) {
-                    //Stop processing to show level results!
-                    preview!!.stop()
-
-                    Toast.makeText(
-                        this@LiveCamera.activity,
-                        "Done!!! Going back to main activity in $TIME_TO_STOP_AFTER_GUESS_ALL_WORDS ms",
-                        Toast.LENGTH_LONG
-                    ).show()
-
-                    //Play TaDa sound after 1 sec
-                    Handler().postDelayed({
-                        mediaPlayer = MediaPlayer.create(this@LiveCamera.activity, R.raw.tada_sound)
-                        mediaPlayer.start()
-                    }, 500)
-
-                    //ToDo: Hide camera preview, show words learnt!
-
-                    saveLevelCompleted()
-
-                    Handler().postDelayed({
-                        if (!isLevelDone) {
-                            findNavController().popBackStack()
-                            isLevelDone = true
-                        }
-                    }, TIME_TO_STOP_AFTER_GUESS_ALL_WORDS)
-                }
-            }
-        }
 
         return  binding.root
     }
