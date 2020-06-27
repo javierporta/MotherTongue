@@ -216,7 +216,7 @@ class HomeFragment : Fragment(),  AdapterView.OnItemSelectedListener  {
         binding.playButton.isClickable = true
         binding.playButton.isEnabled = true
 
-        binding.pBar.visibility = View.GONE
+        binding.pBar.visibility = View.INVISIBLE
 
         binding.gameStatusButton.isClickable = true
         binding.gameStatusButton.isEnabled = true
