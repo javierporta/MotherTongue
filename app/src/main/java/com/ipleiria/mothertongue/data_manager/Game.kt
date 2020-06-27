@@ -25,10 +25,14 @@ class Game {
                     contexts = arrayOf("HOUSE")
                 ),
                 GamePhrase(phrase = "Toy", wasGuessed = false, contexts = arrayOf("HOUSE")),
-                GamePhrase(phrase = "TV", wasGuessed = false, contexts = arrayOf("HOUSE")),
+                GamePhrase(phrase = "Television", wasGuessed = false, contexts = arrayOf("HOUSE")),
                 GamePhrase(phrase = "Pillow", wasGuessed = false, contexts = arrayOf("HOUSE")),
                 GamePhrase(phrase = "Desktop", wasGuessed = false, contexts = arrayOf("HOUSE")),
-                GamePhrase(phrase = "Shoe", wasGuessed = false, contexts = arrayOf("SHOPPING","HOUSE")),
+                GamePhrase(
+                    phrase = "Shoes",
+                    wasGuessed = false,
+                    contexts = arrayOf("SHOPPING", "HOUSE")
+                ),
                 GamePhrase(phrase = "Sunglasses", wasGuessed = false, contexts = arrayOf("PARK", "SHOPPING","HOUSE")),
 
                 GamePhrase(phrase = "Flower", wasGuessed = false, contexts = arrayOf("PARK","STREET")),
