@@ -23,18 +23,18 @@
     <fragment
         android:id="@+id/gameProfile"
         android:name="com.ipleiria.mothertongue.ui.profile.GameProfile"
-        android:label="fragment_game_profile"
+        android:label="Game Status"
         tools:layout="@layout/fragment_game_profile" />
     <fragment
         android:id="@+id/liveCamera"
         android:name="com.ipleiria.mothertongue.ui.camera.LiveCamera"
-        android:label="fragment_live_camera"
+        android:label="Game"
         tools:layout="@layout/fragment_live_camera" />
     <fragment
         android:id="@+id/userPosition"
         android:name="com.ipleiria.mothertongue.ui.location.UserPosition"
-        android:label="fragment_user_position"
-        tools:layout="@layout/fragment_user_position" >
+        android:label="About your location"
+        tools:layout="@layout/fragment_user_position">
         <action
             android:id="@+id/action_userPosition_to_nav_home"
             app:destination="@id/nav_home"

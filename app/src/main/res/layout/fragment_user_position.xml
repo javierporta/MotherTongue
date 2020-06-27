@@ -37,7 +37,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:text="We have not been able to classify the place where it is located, you must select one of the following."
+            android:text="We have not been able to classify the place where you are located, please select which environment matches better with where you are now"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
