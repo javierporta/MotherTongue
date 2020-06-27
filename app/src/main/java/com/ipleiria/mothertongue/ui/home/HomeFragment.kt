@@ -1,14 +1,19 @@
 package com.ipleiria.mothertongue.ui.home
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -76,9 +81,40 @@ class HomeFragment : Fragment(),  AdapterView.OnItemSelectedListener  {
         }
 
         if(PAGE != "Location" && mainModel.currentPlaceName == "") {
-            ContextService.instance.detectPlace(this, binding);
+
+            if (!alreadyGrantedPermission()) {
+                checkAndAskAccessFinePermission()
+            } else {
+                ContextService.instance.detectPlace(this, binding);
+            }
         }
     }
+
+    private fun checkAndAskAccessFinePermission() {
+        requestPermissions(
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            1
+        )
+    }
+
+    private fun alreadyGrantedPermission(): Boolean {
+        return (checkSelfPermission(
+            this.activity!!.applicationContext,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) ==
+                PackageManager.PERMISSION_GRANTED
+                )
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String?>, grantResults: IntArray
+    ) {
+        ContextService.instance.detectPlace(this, binding)
+        super.onRequestPermissionsResult(requestCode, permissions!!, grantResults)
+    }
+
+
 
     private fun initializeLanguageSpinner() {
         // Create an ArrayAdapter using the string array and a default spinner layout
