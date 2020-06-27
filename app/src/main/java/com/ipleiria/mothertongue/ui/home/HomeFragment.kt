@@ -26,6 +26,7 @@ import com.ipleiria.mothertongue.models.GamePhrase
 import com.ipleiria.mothertongue.models.MainModel
 import com.ipleiria.mothertongue.services.ContextService
 import com.ipleiria.mothertongue.translations.TranslatorService
+import java.lang.Exception
 
 class HomeFragment : Fragment(),  AdapterView.OnItemSelectedListener  {
 
@@ -47,9 +48,6 @@ class HomeFragment : Fragment(),  AdapterView.OnItemSelectedListener  {
 
         //bind mainModel
         binding.mainModel = mainModel
-
-        Game.initializeGame()
-        Game.getGameData(this.activity!!)
 
         binding.scoreTextView.text = Game.gameStatus.getScore().toString()
 
@@ -164,10 +162,6 @@ class HomeFragment : Fragment(),  AdapterView.OnItemSelectedListener  {
 
     fun onClickPlayButton(view: View) {
 
-        //Todo: Pass list depending on context. Now using #HOME category#
-        //Translate phrases
-
-
         //WARNING: Similar things should not be together in this list
         //ToDo: get the one depending on context
         var currentGamePhrases = arrayListOf<GamePhrase>()
@@ -183,7 +177,7 @@ class HomeFragment : Fragment(),  AdapterView.OnItemSelectedListener  {
 
         //Try to create a new game level
         var newGameLevel = GameLevel(
-            mainModel.currentPlaceName+ "-" + firebaseSelectedLanguageEnum, //ToDo: Replace HOme by place/category
+            mainModel.currentPlaceName + "-" + firebaseSelectedLanguageEnum,
             firebaseSelectedLanguageEnum,
             newPhrases,
             false

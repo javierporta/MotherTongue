@@ -31,17 +31,6 @@ class GameStatusActivity : AppCompatActivity() {
         getDashboardData()
     }
 
-    override fun onPause() {
-        super.onPause()
-        this.saveUsername()
-    }
-
-    private fun saveUsername() {
-        Game.gameStatus.username = binding.usernameTextView.text.toString()
-        Game.saveGame(this@GameStatusActivity)
-    }
-
-
     private fun getDashboardData() {
         binding.scoreValueTextView.text = getScore().toString()
         binding.languagesLearntValueTextView.text = getLearningLanguages().toString()

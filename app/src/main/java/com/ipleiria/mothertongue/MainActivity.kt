@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
 import com.ipleiria.mothertongue.data_manager.Game
@@ -24,18 +25,35 @@ import com.ipleiria.mothertongue.models.MainModel
 import com.ipleiria.mothertongue.services.ContextService
 import com.ipleiria.mothertongue.translations.TranslatorService
 import java.io.*
+import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
 
+
+    val HOME_FRAGMENT_NAME = "Home"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Game.initializeGame()
+        Game.getGameData(this.applicationContext)
 
         @Suppress("UNUSED_VARIABLE")
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         val navController = this.findNavController(R.id.myNavHostFragment)
         NavigationUI.setupActionBarWithNavController(this,navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            try {
+                if (destination.label!! == HOME_FRAGMENT_NAME) {
+                    Game.saveGame(this.applicationContext)
+                }
+            } catch (e: Exception) {
+                //nothing
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

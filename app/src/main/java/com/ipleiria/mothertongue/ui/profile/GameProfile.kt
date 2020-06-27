@@ -1,5 +1,6 @@
 package com.ipleiria.mothertongue.ui.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -83,9 +84,13 @@ class GameProfile : Fragment() {
             Game.gameStatus.gameLevels.flatMap { it.gamePhrases.map { it.takeIf { it.wasGuessed }?.phrase } }
                 .filterNotNull().sorted() //Another example why I love kotlin
 
-       /* learntWordsAdapter =
-            ArrayAdapter()<String>(this.activity?.applicationContext, android.R.layout.simple_list_item_1, learnWordsArray)
-        binding.learntWordsListView.adapter = learntWordsAdapter*/
+        learntWordsAdapter =
+            ArrayAdapter<String>(
+                this.activity!!.applicationContext,
+                android.R.layout.simple_list_item_1,
+                learnWordsArray
+            )
+        binding.learntWordsListView.adapter = learntWordsAdapter
 
     }
 
