@@ -259,8 +259,7 @@ class LiveCamera : Fragment() {
             }
         }
         if (!allNeededPermissions.isEmpty()) {
-            ActivityCompat.requestPermissions(
-                this.activity!!,
+            requestPermissions(
                 allNeededPermissions.toTypedArray(),
                 PERMISSION_REQUESTS
             )
