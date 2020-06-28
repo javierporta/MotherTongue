@@ -16,7 +16,10 @@ Users, through the device’s camera, are invited to search around an object, an
 MotherTongue may support up to 58 languages.
 
 ### How many objects/activities can the app recognize? 
-More than 400.
+MotherTongue already works with more than 400 words.
+
+### What are the user context being recognized by the app?
+Houses, parks, street, cafes and shoppings
 
 ### I'm a dev, how do I test the application?
 You need to setup Firebase in your local environment, add your own google API key and your are ready to go!
