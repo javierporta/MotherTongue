@@ -10,7 +10,7 @@ For achieving that, a list of words based on user’s context, place and activit
 
 Users, through the device’s camera, are invited to search around an object, animal, food or activity meanwhile objects already recognized on screen are translated by MotherTongue and shown in real time. 
 
-![MotherTongue flow](https://github.com/javierporta/MotherTongue/blob/master/MotherTongue.gif)
+![MotherTongue flow](https://github.com/javierporta/MotherTongue/blob/master/MotherTongue.gif =250x514)
 
 ## FAQ
 
